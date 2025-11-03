@@ -1,0 +1,63 @@
+'use client';
+
+interface HeroProps {
+  onOpenEmail: () => void;
+}
+
+export default function Hero({ onOpenEmail }: HeroProps) {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary via-primary to-primary opacity-50"></div>
+      
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
+        <div className="mb-6">
+          <span className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-semibold border border-accent/30">
+            UCSF-Discovered • Biohacker-Proven
+          </span>
+        </div>
+        
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+          Your Brain Isn't Broken.
+          <br />
+          <span className="text-accent">It's Stuck.</span>
+        </h1>
+        
+        <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+          ISRIB A15 releases the hidden brake blocking your memory, focus, and mental clarity—restoring the cognitive performance you thought you lost.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <button 
+            onClick={onOpenEmail}
+            className="btn-primary w-full sm:w-auto"
+          >
+            Get the Full Story
+          </button>
+          <a 
+            href="#evidence" 
+            className="btn-secondary w-full sm:w-auto"
+          >
+            See the Science
+          </a>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">
+          <div className="bg-secondary/50 p-6 rounded-lg border border-accent/20">
+            <div className="text-accent font-bold text-lg mb-2">Memory Restored</div>
+            <p className="text-gray-400 text-sm">Old mice performed like young ones after just 3 days</p>
+          </div>
+          <div className="bg-secondary/50 p-6 rounded-lg border border-accent/20">
+            <div className="text-accent font-bold text-lg mb-2">TBI Reversed</div>
+            <p className="text-gray-400 text-sm">Brain-injured mice regained normal cognitive function</p>
+          </div>
+          <div className="bg-secondary/50 p-6 rounded-lg border border-accent/20">
+            <div className="text-accent font-bold text-lg mb-2">Zero Toxicity</div>
+            <p className="text-gray-400 text-sm">"Totally benign" - UCSF Lead Researcher</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
