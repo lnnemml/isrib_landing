@@ -102,49 +102,13 @@ export default function PurityGuarantee() {
           </div>
         </div>
         
-        {/* Chromatogram Visualization */}
-        <div className="bg-primary p-8 rounded-lg border border-accent/30">
-          <h3 className="text-xl font-bold mb-6 text-center">Sample LC-MS/HPLC Chromatogram</h3>
-          
-          {/* Simplified chromatogram visualization */}
-          <div className="bg-secondary/50 p-6 rounded-lg border border-accent/20 mb-4">
-            <div className="relative h-48 flex items-end justify-around">
-              {/* Peak representation */}
-              <div className="w-1 bg-gray-600 opacity-20" style={{height: '15%'}}></div>
-              <div className="w-1 bg-gray-600 opacity-20" style={{height: '10%'}}></div>
-              <div className="w-2 bg-accent" style={{height: '95%'}}></div>
-              <div className="w-1 bg-gray-600 opacity-20" style={{height: '8%'}}></div>
-              <div className="w-1 bg-gray-600 opacity-20" style={{height: '12%'}}></div>
-            </div>
-            <div className="text-center mt-4">
-              <p className="text-accent font-bold text-lg">98.7% Main Peak</p>
-              <p className="text-gray-400 text-sm">Single dominant peak = high purity ISRIB A15</p>
-            </div>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div className="bg-secondary/30 p-4 rounded-lg">
-              <p className="text-accent font-semibold mb-1">✓ Primary compound</p>
-              <p className="text-gray-400">ISRIB A15: 98.7%</p>
-            </div>
-            <div className="bg-secondary/30 p-4 rounded-lg">
-              <p className="text-accent font-semibold mb-1">✓ Trace impurities</p>
-              <p className="text-gray-400">{'<'}1.3% (within spec)</p>
-            </div>
-            <div className="bg-secondary/30 p-4 rounded-lg">
-              <p className="text-accent font-semibold mb-1">✓ Heavy metals</p>
-              <p className="text-gray-400">Below detection limit</p>
-            </div>
-          </div>
-        </div>
-        
         {/* COA Promise */}
         <div className="mt-8 text-center bg-accent/10 border border-accent/30 p-6 rounded-lg">
           <p className="text-lg font-semibold mb-2">
             <span className="text-accent">Certificate of Analysis (COA)</span> included with every order
           </p>
           <p className="text-gray-300">
-            See the exact purity data for your specific batch—full transparency, no guesswork.
+            See the exact purity data for your specific batch — full transparency, no guesswork.
           </p>
         </div>
       </div>
