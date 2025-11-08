@@ -24,7 +24,13 @@ export default function CTASection() {
           <div className="bg-secondary border-2 border-accent/30 rounded-lg p-8 hover:border-accent transition-all">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Start Here</h3>
-              <div className="text-4xl font-bold text-accent mb-2">$130</div>
+              <div className="mb-2">
+                <span className="text-2xl text-gray-500 line-through mr-3">$200</span>
+                <span className="text-4xl font-bold text-accent">$130</span>
+              </div>
+              <div className="inline-block bg-red-500/20 border border-red-500 px-3 py-1 rounded-full mb-2">
+                <span className="text-red-400 font-bold text-sm">35% OFF</span>
+              </div>
               <p className="text-gray-400">500mg • ~33-50 doses</p>
             </div>
             
@@ -65,7 +71,13 @@ export default function CTASection() {
             
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Full Protocol</h3>
-              <div className="text-4xl font-bold text-accent mb-2">$200</div>
+              <div className="mb-2">
+                <span className="text-2xl text-gray-500 line-through mr-3">$300</span>
+                <span className="text-4xl font-bold text-accent">$200</span>
+              </div>
+              <div className="inline-block bg-red-500/20 border border-red-500 px-3 py-1 rounded-full mb-2">
+                <span className="text-red-400 font-bold text-sm">33% OFF</span>
+              </div>
               <p className="text-gray-400">1000mg • ~66-100 doses</p>
             </div>
             
