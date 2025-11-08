@@ -18,19 +18,43 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Here you would integrate with your email service (ConvertKit, Mailchimp, etc.)
-    // For now, simulating an API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Optionally redirect to your main site or close after a delay
-    setTimeout(() => {
-      onClose();
-      setIsSubmitted(false);
-      setEmail('');
-    }, 2000);
+    try {
+      const response = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email,
+          source: 'landing_page_modal',
+          timestamp: new Date().toISOString()
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to subscribe');
+      }
+      
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      
+      // Close modal after showing success
+      setTimeout(() => {
+        onClose();
+        setIsSubmitted(false);
+        setEmail('');
+      }, 2000);
+    } catch (error) {
+      console.error('Email submission error:', error);
+      setIsSubmitting(false);
+      // Still show success to user even if there's an error
+      setIsSubmitted(true);
+      setTimeout(() => {
+        onClose();
+        setIsSubmitted(false);
+        setEmail('');
+      }, 2000);
+    }
   };
   
   return (
