@@ -12,7 +12,7 @@ export default function CTASection() {
             Ready to Release the Brake?
           </h2>
           <p className="section-subheading">
-            Start with ISRIB A15—the optimized analog designed for human use.
+            Start with ISRIB A15 — the optimized analog designed for human use.
           </p>
           <p className="text-gray-400 text-sm">
             Early access for researchers only • Ships within 48 hours
@@ -150,7 +150,7 @@ export default function CTASection() {
             <span className="font-semibold">Important:</span> ISRIB A15 is a research compound, not FDA-approved. Intended for personal research use only.
           </p>
           <p className="text-sm text-gray-400">
-            Follow the protocol for 2 weeks. If you notice no cognitive improvement, contact us—we'll troubleshoot together.
+            Follow the protocol for 2 weeks. If you notice no cognitive improvement, contact us — we'll troubleshoot together.
           </p>
         </div>
       </div>
