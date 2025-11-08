@@ -32,11 +32,11 @@ export default function FAQ() {
   const faqs = [
     {
       question: "Is ISRIB A15 safe?",
-      answer: "In animal studies, ISRIB showed no toxicity at effective doses. UCSF researchers called it 'totally benign.' However, it's an experimental compound—long-term human data is still emerging. We recommend starting with the lowest effective dose and monitoring your response."
+      answer: "In animal studies, ISRIB showed no toxicity at effective doses. UCSF researchers called it 'totally benign.' However, it's an experimental compound — long-term human data is still emerging. We recommend starting with the lowest effective dose and monitoring your response."
     },
     {
       question: "Will I feel anything immediately?",
-      answer: "Most users notice subtle changes within 3-5 days—easier task initiation, better retention, less mental fog. By day 7, effects become undeniable. This is restoration, not stimulation, so don't expect an instant buzz like caffeine."
+      answer: "Most users notice subtle changes within 3-5 days — easier task initiation, better retention, less mental fog. By day 7, effects become undeniable. This is restoration, not stimulation, so don't expect an instant buzz like caffeine."
     },
     {
       question: "How does it compare to Modafinil or Adderall?",
@@ -44,7 +44,7 @@ export default function FAQ() {
     },
     {
       question: "What if I've tried everything and nothing works?",
-      answer: "ISRIB works on a fundamentally different mechanism than racetams, adaptogens, or stimulants. It targets the Integrated Stress Response—a pathway most nootropics don't touch. If your cognition is blocked by chronic ISR activation, ISRIB may succeed where others failed."
+      answer: "ISRIB works on a fundamentally different mechanism than racetams, adaptogens, or stimulants. It targets the Integrated Stress Response — a pathway most nootropics don't touch. If your cognition is blocked by chronic ISR activation, ISRIB may succeed where others failed."
     },
     {
       question: "How do I take it?",
@@ -52,7 +52,7 @@ export default function FAQ() {
     },
     {
       question: "Will it make me anxious or affect my sleep?",
-      answer: "No. ISRIB is not a stimulant—it has no dopaminergic or adrenergic activity. Many users report better sleep as stress signaling normalizes. Take before 2pm to ensure it doesn't interfere with your circadian rhythm."
+      answer: "No. ISRIB is not a stimulant — it has no dopaminergic or adrenergic activity. Many users report better sleep as stress signaling normalizes. Take before 2pm to ensure it doesn't interfere with your circadian rhythm."
     },
     {
       question: "Is this legal?",
@@ -94,8 +94,8 @@ export default function FAQ() {
             </a>
           </div>
           <p className="text-gray-300 text-sm">
-            Email: <a href="mailto:support@isrib.shop" className="text-accent hover:underline">support@isrib.shop</a>
-            <br />We read and respond to every message within 24 hours.
+            Email: <a href="mailto:isrib.shop@protonmail.com" className="text-accent hover:underline">isrib.shop@protonmail.com</a>
+            <br />We read and respond to every message within 12 hours.
           </p>
         </div>
       </div>
