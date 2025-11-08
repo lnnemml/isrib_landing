@@ -48,7 +48,7 @@ export default function Experience() {
                 </div>
               </div>
               <blockquote className="text-gray-300 italic mb-3">
-                "Doctors said 'this is as good as it gets.' I felt 20 IQ points down. Week 2, the fog lifted like a window cracked open. I tracked conversations again—words came back."
+                "Doctors said 'this is as good as it gets.' I felt 20 IQ points down. Week 2, the fog lifted like a window cracked open. I tracked conversations again — words came back."
               </blockquote>
               <p className="text-accent font-semibold text-sm">Week 2: Normal cognitive function returned</p>
             </div>
@@ -66,7 +66,7 @@ export default function Experience() {
                 </div>
               </div>
               <blockquote className="text-gray-300 italic mb-3">
-                "I told myself 'this is age'—demoralizing. By Week 3, recall was scary good. Names, details, context—on demand. Feels like I'm 40 again. My team noticed. My wife noticed."
+                "I told myself 'this is age'— demoralizing. By Week 3, recall was scary good. Names, details, context are on demand. Feels like I'm 40 again. My team noticed. My wife noticed."
               </blockquote>
               <p className="text-accent font-semibold text-sm">Week 3: Memory performance of a decade ago</p>
             </div>
@@ -132,19 +132,19 @@ export default function Experience() {
           <div className="grid md:grid-cols-2 gap-4 text-left">
             <div className="flex items-start">
               <span className="text-red-400 mr-2 text-xl">✗</span>
-              <span className="text-gray-300">Not a stimulant—no jitters or crash</span>
+              <span className="text-gray-300">Not a stimulant. No jitters or crash</span>
             </div>
             <div className="flex items-start">
               <span className="text-red-400 mr-2 text-xl">✗</span>
-              <span className="text-gray-300">Not euphoric—no buzz, just clarity</span>
+              <span className="text-gray-300">Not euphoric — no buzz, just clarity</span>
             </div>
             <div className="flex items-start">
               <span className="text-red-400 mr-2 text-xl">✗</span>
-              <span className="text-gray-300">Not "Limitless"—you think like yourself again</span>
+              <span className="text-gray-300">Not "Limitless". You think like yourself again</span>
             </div>
             <div className="flex items-start">
               <span className="text-red-400 mr-2 text-xl">✗</span>
-              <span className="text-gray-300">Not instant—restoration takes 3-7 days</span>
+              <span className="text-gray-300">Not instant — restoration takes 3-7 days</span>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function Experience() {
             Start Your Trial
           </a>
           <p className="text-sm text-gray-400 mt-4">
-            Join 1,000+ researchers already experiencing the difference
+           1,000+ researchers already experiencing the difference
           </p>
         </div>
       </div>
