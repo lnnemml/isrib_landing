@@ -79,7 +79,7 @@ export default function WhoIsThisFor() {
             Your brain isn't lazy. It's locked.
           </p>
           <p className="text-lg text-gray-300">
-            The Integrated Stress Response (ISR) is blocking your cognitive capacity—and ISRIB A15 is specifically designed to release that block.
+            The Integrated Stress Response (ISR) is blocking your cognitive capacity — and ISRIB A15 is specifically designed to release that block.
           </p>
         </div>
       </div>
