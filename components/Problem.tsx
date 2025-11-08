@@ -12,7 +12,7 @@ export default function Problem() {
         
         <div className="bg-secondary/50 border-l-4 border-accent p-8 rounded-r-lg mb-12">
           <p className="text-lg leading-relaxed mb-6">
-            When your body senses stress—from overwork, poor sleep, inflammation, or aging—your neurons activate something called the <span className="text-accent font-semibold">Integrated Stress Response (ISR)</span>.
+            When your body senses stress — from overwork, poor sleep, inflammation, or aging — your neurons activate something called the <span className="text-accent font-semibold">Integrated Stress Response (ISR)</span>.
           </p>
           <p className="text-lg leading-relaxed mb-6">
             It's a molecular emergency brake that stops your brain from "overheating."
