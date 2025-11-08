@@ -11,8 +11,14 @@ export default function Discovery() {
         </p>
         
         <div className="prose prose-invert prose-lg max-w-none">
+          {/* The Cellular Brake */}
           <div className="bg-secondary/30 p-8 rounded-lg mb-8">
-            <h3 className="text-2xl font-bold mb-4 text-accent">San Francisco, 2013</h3>
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
+                <span className="text-2xl">🧬</span>
+              </div>
+              <h3 className="text-2xl font-bold text-accent m-0">The Cellular Brake</h3>
+            </div>
             <p className="text-gray-300 leading-relaxed mb-4">
               Dr. Peter Walter's lab at UCSF wasn't chasing a "smart drug." They were studying cellular stress responses—molecular housekeeping.
             </p>
@@ -24,24 +30,40 @@ export default function Discovery() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            <div className="bg-primary p-6 rounded-lg border border-accent/20">
-              <h4 className="text-xl font-bold mb-3 text-accent">The Mechanism</h4>
-              <p className="text-gray-300 leading-relaxed text-sm">
-                ISRIB binds to eIF2B protein complex, locking it in the "on" position. This allows neurons to continue making proteins needed for memory and learning—even under stress.
-              </p>
+          {/* The Discovery */}
+          <div className="bg-secondary/30 p-8 rounded-lg mb-8">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
+                <span className="text-2xl">🔬</span>
+              </div>
+              <h3 className="text-2xl font-bold text-accent m-0">The Discovery</h3>
             </div>
-            
-            <div className="bg-primary p-6 rounded-lg border border-accent/20">
-              <h4 className="text-xl font-bold mb-3 text-accent">The Difference</h4>
-              <p className="text-gray-300 leading-relaxed text-sm">
-                Unlike stimulants that push harder, ISRIB releases the brake at a fundamental cellular level—restoring your brain's natural capacity.
-              </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-primary p-6 rounded-lg border border-accent/20">
+                <h4 className="text-xl font-bold mb-3 text-accent">The Mechanism</h4>
+                <p className="text-gray-300 leading-relaxed text-sm">
+                  ISRIB binds to eIF2B protein complex, locking it in the "on" position. This allows neurons to continue making proteins needed for memory and learning—even under stress.
+                </p>
+              </div>
+              
+              <div className="bg-primary p-6 rounded-lg border border-accent/20">
+                <h4 className="text-xl font-bold mb-3 text-accent">The Difference</h4>
+                <p className="text-gray-300 leading-relaxed text-sm">
+                  Unlike stimulants that push harder, ISRIB releases the brake at a fundamental cellular level—restoring your brain's natural capacity.
+                </p>
+              </div>
             </div>
           </div>
           
-          <div className="bg-accent/10 border-l-4 border-accent p-8 rounded-r-lg mb-12">
-            <h3 className="text-2xl font-bold mb-6">The Results That Shocked Scientists:</h3>
+          {/* The Reset */}
+          <div className="bg-accent/10 border-l-4 border-accent p-8 rounded-r-lg mb-8">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="text-2xl font-bold m-0">The Reset</h3>
+            </div>
+            <p className="text-lg font-semibold text-accent mb-6">The Results That Shocked Scientists:</p>
             
             <div className="space-y-6">
               <div>
@@ -73,6 +95,19 @@ export default function Discovery() {
             </blockquote>
             <p className="text-accent font-semibold">— Dr. Peter Walter, UCSF, ISRIB Co-Inventor</p>
           </div>
+        </div>
+        
+        {/* Early CTA */}
+        <div className="mt-12 text-center">
+          <a 
+            href="https://isrib.shop/buy-1g.html"
+            className="btn-primary inline-block"
+          >
+            Try ISRIB A15
+          </a>
+          <p className="text-sm text-gray-400 mt-4">
+            Limited research batch • Ships within 48h
+          </p>
         </div>
       </div>
     </section>
