@@ -24,24 +24,38 @@ export default function Hero({ onOpenEmail }: HeroProps) {
           <span className="text-accent">It's Stuck.</span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+        <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed max-w-3xl mx-auto">
           ISRIB A15 releases the hidden brake blocking your memory, focus, and mental clarity—restoring the cognitive performance you thought you lost.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <p className="text-lg md:text-xl text-accent font-semibold mb-6 max-w-2xl mx-auto">
+          Unlock memory, focus, and clarity within days.
+        </p>
+        
+        <div className="inline-block bg-accent/10 border border-accent/30 px-6 py-3 rounded-lg mb-8">
+          <p className="text-gray-300 text-sm md:text-base">
+            <span className="font-semibold text-accent">It's not a stimulant.</span> It's restoration.
+          </p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <a 
+            href="https://isrib.shop/buy-1g.html"
+            className="btn-primary w-full sm:w-auto"
+          >
+            Try ISRIB A15
+          </a>
           <button 
             onClick={onOpenEmail}
-            className="btn-primary w-full sm:w-auto"
+            className="btn-secondary w-full sm:w-auto"
           >
             Get the Full Story
           </button>
-          <a 
-            href="#evidence" 
-            className="btn-secondary w-full sm:w-auto"
-          >
-            See the Science
-          </a>
         </div>
+        
+        <p className="text-sm text-gray-400 mb-12">
+          Purity verified • Discreet shipping
+        </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">
           <div className="bg-secondary/50 p-6 rounded-lg border border-accent/20">
