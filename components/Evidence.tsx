@@ -43,7 +43,7 @@ export default function Evidence() {
               <li>• Elderly mice treated for just 3 days</li>
               <li>• Performed like young mice in cognitive tests weeks later</li>
               <li>• Memory formation restored to youthful levels</li>
-              <li>• Lead researcher: "The aged brain isn't lost—it's trapped"</li>
+              <li>• Lead researcher: "The aged brain isn't lost — it's trapped"</li>
             </ul>
             <p className="text-sm text-gray-400 mt-4">Source: eLife</p>
           </div>
@@ -62,7 +62,7 @@ export default function Evidence() {
         <div className="bg-accent/10 border border-accent/30 p-8 rounded-lg text-center">
           <h3 className="text-2xl font-bold mb-4">What This Means For You</h3>
           <p className="text-lg text-gray-300 leading-relaxed">
-            Whether you're dealing with chronic stress, post-concussion fog, age-related slowdown, or just hitting a performance wall—the mechanism is the same: <span className="text-accent font-semibold">an overactive ISR blocking your brain's natural capacity</span>.
+            Whether you're dealing with chronic stress, post-concussion fog, age-related slowdown, or just hitting a performance wall — the mechanism is the same: <span className="text-accent font-semibold">an overactive ISR blocking your brain's natural capacity</span>.
           </p>
           <p className="text-lg text-gray-300 leading-relaxed mt-4">
             ISRIB A15 releases that brake.
