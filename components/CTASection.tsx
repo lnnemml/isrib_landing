@@ -2,12 +2,20 @@ export default function CTASection() {
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-secondary to-primary">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-accent/20 border border-accent px-6 py-2 rounded-full mb-4">
+            <p className="text-accent font-semibold text-sm">
+              ⚡ Intro Offer: Limited Research Batch
+            </p>
+          </div>
           <h2 className="section-heading">
             Ready to Release the Brake?
           </h2>
           <p className="section-subheading">
             Start with ISRIB A15—the optimized analog designed for human use.
+          </p>
+          <p className="text-gray-400 text-sm">
+            Early access for researchers only • Ships within 48 hours
           </p>
         </div>
         
@@ -40,7 +48,7 @@ export default function CTASection() {
             </ul>
             
             <a 
-              href="https://isrib.shop/products/500mg" 
+              href="https://isrib.shop/buy-500mg.html" 
               className="block btn-primary text-center"
             >
               Order 500mg
@@ -81,7 +89,7 @@ export default function CTASection() {
             </ul>
             
             <a 
-              href="https://isrib.shop/products/1000mg" 
+              href="https://isrib.shop/buy-1g.html" 
               className="block btn-primary text-center"
             >
               Order 1g
@@ -117,6 +125,12 @@ export default function CTASection() {
               <span>Research-backed guidance</span>
             </div>
           </div>
+        </div>
+        
+        <div className="text-center bg-secondary/50 border border-accent/20 p-6 rounded-lg mb-6">
+          <p className="text-sm text-gray-300 mb-2">
+            <span className="font-semibold text-accent">Purity verified.</span> Discreet shipping.
+          </p>
         </div>
         
         <div className="text-center bg-primary p-6 rounded-lg">
