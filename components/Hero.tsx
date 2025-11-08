@@ -25,7 +25,7 @@ export default function Hero({ onOpenEmail }: HeroProps) {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed max-w-3xl mx-auto">
-          ISRIB A15 releases the hidden brake blocking your memory, focus, and mental clarity—restoring the cognitive performance you thought you lost.
+          ISRIB A15 releases the hidden brake blocking your memory, focus, and mental clarity, restoring the cognitive performance you thought you lost.
         </p>
         
         <p className="text-lg md:text-xl text-accent font-semibold mb-6 max-w-2xl mx-auto">
