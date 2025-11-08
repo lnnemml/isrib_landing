@@ -81,10 +81,21 @@ export default function FAQ() {
         </div>
         
         <div className="mt-12 text-center bg-accent/10 border border-accent/30 p-8 rounded-lg">
-          <p className="text-lg mb-4">Still have questions?</p>
-          <p className="text-gray-300 mb-6">
-            Email us at <a href="mailto:support@isrib.shop" className="text-accent hover:underline">support@isrib.shop</a>
-            <br />We read and respond to every message.
+          <p className="text-lg mb-6 font-semibold">Still have questions?</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+            <a 
+              href="mailto:support@isrib.shop"
+              className="btn-primary inline-flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contact Support
+            </a>
+          </div>
+          <p className="text-gray-300 text-sm">
+            Email: <a href="mailto:support@isrib.shop" className="text-accent hover:underline">support@isrib.shop</a>
+            <br />We read and respond to every message within 24 hours.
           </p>
         </div>
       </div>
