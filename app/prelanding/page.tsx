@@ -272,6 +272,45 @@ export default function PreLanding() {
         </div>
       </section>
 
+      {/* Who's Behind This - Final Trust Signal */}
+      <section className="py-12 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-secondary/50 border-2 border-accent/30 p-6 md:p-8 rounded-lg">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-accent">
+              Who's Behind This
+            </h2>
+            
+            <div className="space-y-4 text-gray-300 leading-relaxed">
+              <p className="text-base md:text-lg">
+                I'm a chemist focused on neuro-related research compounds. I oversee synthesis, purification and batch verification (LC-MS / NMR) and handle all packaging in-house.
+              </p>
+              
+              <p className="text-base md:text-lg font-semibold text-accent">
+                This isn't a resold material or third-party bulk supply. It's controlled research-grade production with full traceability.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-accent/20">
+                <div className="text-center">
+                  <div className="text-3xl mb-2">⚗️</div>
+                  <p className="font-semibold text-sm">In-House Synthesis</p>
+                  <p className="text-xs text-gray-400">Not resold</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl mb-2">🔬</div>
+                  <p className="font-semibold text-sm">LC-MS / NMR Verified</p>
+                  <p className="text-xs text-gray-400">Every batch</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl mb-2">📋</div>
+                  <p className="font-semibold text-sm">Full Traceability</p>
+                  <p className="text-xs text-gray-400">COA included</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer Disclaimer */}
       <footer className="py-8 px-4 bg-primary border-t border-accent/20">
         <div className="max-w-3xl mx-auto text-center text-xs md:text-sm text-gray-400">
