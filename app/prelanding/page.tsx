@@ -1,176 +1,279 @@
 'use client';
 
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      params: {
+        event_category?: string;
+        event_label?: string;
+        value?: number;
+      }
+    ) => void;
+  }
+}
+
 export default function PreLanding() {
+  const handleCTAClick = (location: string) => {
+    // Track CTA clicks
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'prelander_cta_click', {
+        event_category: 'engagement',
+        event_label: location,
+        value: 1
+      });
+    }
+  };
+
   return (
     <main className="min-h-screen bg-primary">
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
+      {/* Hero Section - Optimized for Above-the-Fold */}
+      <section className="relative py-12 md:py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-secondary via-primary to-primary opacity-50"></div>
         
         <div className="relative z-10 max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-center">
             Your Brain Isn't "Underperforming."
             <br />
             <span className="text-accent">It's Being Biochemically Restricted.</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-300 mb-6 leading-relaxed text-center">
-            A specific cellular stress-response pathway (ISR) can suppress cognitive clarity, memory recall, and learning efficiency — especially after prolonged stress, overwork, or neurological strain. ISRIB A15 is a research compound that targets this pathway.
+          <p className="text-base md:text-lg text-gray-300 mb-3 leading-relaxed text-center" style={{lineHeight: '1.7'}}>
+            A specific cellular stress-response pathway (ISR) can suppress cognitive clarity, memory recall, and learning efficiency — especially after prolonged stress, overwork, or neurological strain.
           </p>
           
-          <div className="bg-secondary/50 border-l-4 border-accent p-6 rounded-r-lg mb-8 max-w-2xl mx-auto">
-            <p className="text-gray-300 leading-relaxed italic">
+          <p className="text-lg md:text-xl text-accent font-semibold mb-6 text-center">
+            Back to clear, steady thinking in deep work sessions.
+          </p>
+          
+          {/* Social Proof - Factual Context */}
+          <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-6 text-sm md:text-base">
+            <div className="flex items-center gap-2 text-gray-300">
+              <span className="text-accent text-xl">🔬</span>
+              <span><strong className="text-accent">98.7%</strong> HPLC purity</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300">
+              <span className="text-accent text-xl">📊</span>
+              <span>Used in cognitive research since <strong className="text-accent">2013+</strong></span>
+            </div>
+          </div>
+          
+          {/* Moved Qualification Up */}
+          <div className="bg-secondary/60 border border-accent/20 rounded-lg p-4 md:p-6 mb-6">
+            <h2 className="text-lg md:text-xl font-bold mb-3 text-center">This Is For You If:</h2>
+            <ul className="space-y-2 text-sm md:text-base text-gray-300">
+              <li className="flex items-start">
+                <span className="text-accent mr-2 mt-1">→</span>
+                <span>You experience brain fog after periods of high stress or intense work</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-accent mr-2 mt-1">→</span>
+                <span>You struggle to maintain focus for more than 45 minutes at a time</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-accent mr-2 mt-1">→</span>
+                <span>You feel mentally fatigued even after a full night's sleep</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-accent mr-2 mt-1">→</span>
+                <span>Your thinking used to be sharper, and you want that clarity back</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-accent mr-2 mt-1">→</span>
+                <span>You want restoration, not stimulation</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="bg-secondary/50 border-l-4 border-accent p-4 md:p-5 rounded-r-lg mb-6 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed italic">
               I've seen people push themselves hard — work, study, burnout — and feel their mind "slip" even while their motivation stays high. That's why I started researching ISR modulation.
             </p>
           </div>
           
-          <div className="text-center">
+          {/* Primary CTA - Multiple Options */}
+          <div className="text-center space-y-3">
             <a 
-              href="#qualification"
-              className="inline-block bg-accent hover:bg-accent-dark text-primary font-semibold px-10 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-lg"
+              href="/?utm_source=reddit&utm_campaign=prelander&utm_content=primary_cta"
+              onClick={() => handleCTAClick('hero_primary')}
+              className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-8 md:px-12 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-base md:text-lg w-full md:w-auto"
+              style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
             >
-              Continue to Research Breakdown →
+              See the Research Details →
             </a>
+            
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <a 
+                href="/?utm_source=reddit&utm_campaign=prelander&utm_content=secondary_cta#mechanism"
+                onClick={() => handleCTAClick('hero_secondary')}
+                className="text-accent hover:text-accent-dark font-semibold text-sm underline"
+              >
+                How it's different
+              </a>
+              <span className="hidden sm:inline text-gray-500">•</span>
+              <a 
+                href="/?utm_source=reddit&utm_campaign=prelander&utm_content=tertiary_cta#purity"
+                onClick={() => handleCTAClick('hero_tertiary')}
+                className="text-accent hover:text-accent-dark font-semibold text-sm underline"
+              >
+                View purity data
+              </a>
+            </div>
+            
+            {/* Micro-Guarantee */}
+            <p className="text-xs md:text-sm text-gray-400 mt-3">
+              No medical claims. Research-only. Full COA inside.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Qualification Section */}
-      <section id="qualification" className="py-20 px-4 bg-secondary/30">
+      {/* Disqualification Section */}
+      <section className="py-12 px-4 bg-secondary/30">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-            This Is For You If:
-          </h2>
-          
-          <div className="space-y-4 mb-12">
-            <div className="bg-primary p-6 rounded-lg border-l-4 border-accent flex items-start">
-              <span className="text-accent text-2xl mr-4">✓</span>
-              <p className="text-lg text-gray-300">
-                You feel your thinking used to be sharper than it is now
-              </p>
-            </div>
-            
-            <div className="bg-primary p-6 rounded-lg border-l-4 border-accent flex items-start">
-              <span className="text-accent text-2xl mr-4">✓</span>
-              <p className="text-lg text-gray-300">
-                You can focus, but it takes more effort than before
-              </p>
-            </div>
-            
-            <div className="bg-primary p-6 rounded-lg border-l-4 border-accent flex items-start">
-              <span className="text-accent text-2xl mr-4">✓</span>
-              <p className="text-lg text-gray-300">
-                You learn slower despite trying harder
-              </p>
-            </div>
-            
-            <div className="bg-primary p-6 rounded-lg border-l-4 border-accent flex items-start">
-              <span className="text-accent text-2xl mr-4">✓</span>
-              <p className="text-lg text-gray-300">
-                Your brain "lags" under stress or after periods of intense work
-              </p>
-            </div>
-            
-            <div className="bg-primary p-6 rounded-lg border-l-4 border-accent flex items-start">
-              <span className="text-accent text-2xl mr-4">✓</span>
-              <p className="text-lg text-gray-300">
-                You want clarity — not stimulation
-              </p>
-            </div>
-          </div>
-          
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
             This Is Not For You If:
           </h2>
           
-          <div className="space-y-4 mb-12">
-            <div className="bg-secondary/50 p-6 rounded-lg border-l-4 border-red-500/50 flex items-start">
-              <span className="text-red-400 text-2xl mr-4">✗</span>
-              <p className="text-lg text-gray-300">
+          <div className="space-y-3 mb-8">
+            <div className="bg-secondary/50 p-4 rounded-lg border-l-4 border-red-500/50 flex items-start">
+              <span className="text-red-400 text-xl mr-3 mt-1">✗</span>
+              <p className="text-base text-gray-300">
                 You're looking for a quick dopamine hit or "instant hype"
               </p>
             </div>
             
-            <div className="bg-secondary/50 p-6 rounded-lg border-l-4 border-red-500/50 flex items-start">
-              <span className="text-red-400 text-2xl mr-4">✗</span>
-              <p className="text-lg text-gray-300">
+            <div className="bg-secondary/50 p-4 rounded-lg border-l-4 border-red-500/50 flex items-start">
+              <span className="text-red-400 text-xl mr-3 mt-1">✗</span>
+              <p className="text-base text-gray-300">
                 You're not interested in research-grade compounds
               </p>
             </div>
             
-            <div className="bg-secondary/50 p-6 rounded-lg border-l-4 border-red-500/50 flex items-start">
-              <span className="text-red-400 text-2xl mr-4">✗</span>
-              <p className="text-lg text-gray-300">
+            <div className="bg-secondary/50 p-4 rounded-lg border-l-4 border-red-500/50 flex items-start">
+              <span className="text-red-400 text-xl mr-3 mt-1">✗</span>
+              <p className="text-base text-gray-300">
                 You expect pharmaceutical or medical claims
               </p>
             </div>
           </div>
           
-          <div className="bg-accent/10 border-2 border-accent/30 p-6 rounded-lg mb-8">
+          <div className="bg-accent/10 border-2 border-accent/30 p-5 rounded-lg mb-6">
             <p className="text-sm text-gray-300 leading-relaxed text-center">
-              <strong className="text-accent">Important:</strong> This is a research compound. It is not approved to diagnose, treat, cure, or prevent any disease. It is intended for scientific investigation only.
+              <strong className="text-accent">Important:</strong> ISRIB A15 is a research compound. It is not approved to diagnose, treat, cure, or prevent any disease. It is intended for scientific investigation only.
             </p>
-          </div>
-          
-          <div className="text-center">
-            <a 
-              href="#mechanism"
-              className="inline-block bg-accent hover:bg-accent-dark text-primary font-semibold px-10 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-lg"
-            >
-              See How ISR Pathway Modulation Works →
-            </a>
           </div>
         </div>
       </section>
 
       {/* The Mechanism */}
-      <section id="mechanism" className="py-20 px-4">
+      <section id="mechanism" className="py-12 px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
             The ISR Pathway
           </h2>
           
-          <div className="bg-secondary/50 border-l-4 border-accent p-8 rounded-r-lg mb-12">
-            <p className="text-xl text-gray-300 leading-relaxed mb-4">
+          <div className="bg-secondary/50 border-l-4 border-accent p-6 md:p-8 rounded-r-lg mb-8">
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-4" style={{lineHeight: '1.7'}}>
               When the Integrated Stress Response activates, protein synthesis in neurons decreases.
             </p>
-            <p className="text-xl text-gray-300 leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed" style={{lineHeight: '1.7'}}>
               This affects synaptic plasticity — your brain's ability to form, store, and retrieve information efficiently.
             </p>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
             What ISRIB A15 Does
           </h2>
           
-          <div className="bg-primary p-8 rounded-lg border border-accent/20 mb-12">
-            <p className="text-xl text-gray-300 leading-relaxed mb-4">
+          <div className="bg-primary p-6 md:p-8 rounded-lg border border-accent/20 mb-8">
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-4" style={{lineHeight: '1.7'}}>
               Evidence suggests it may support the reversal of ISR-related translational suppression, restoring normal synaptic signaling.
             </p>
-            <p className="text-xl text-accent leading-relaxed font-semibold">
+            <p className="text-lg md:text-xl text-accent leading-relaxed font-semibold" style={{lineHeight: '1.7'}}>
               In simple terms: it may help your brain access clarity it already has, instead of forcing stimulation from the outside.
             </p>
           </div>
           
-          <div className="text-center">
+          {/* Quality Markers with Icons */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <div className="bg-secondary/30 p-5 rounded-lg border border-accent/20 text-center">
+              <div className="text-4xl mb-3">🧪</div>
+              <h3 className="font-bold text-accent mb-2">Lab-Verified Purity</h3>
+              <p className="text-sm text-gray-300">98.7% HPLC confirmed</p>
+            </div>
+            
+            <div className="bg-secondary/30 p-5 rounded-lg border border-accent/20 text-center">
+              <div className="text-4xl mb-3">⚗️</div>
+              <h3 className="font-bold text-accent mb-2">Synthesis Control</h3>
+              <p className="text-sm text-gray-300">In-house production</p>
+            </div>
+            
+            <div className="bg-secondary/30 p-5 rounded-lg border border-accent/20 text-center">
+              <div className="text-4xl mb-3">🛡️</div>
+              <h3 className="font-bold text-accent mb-2">Storage & QA</h3>
+              <p className="text-sm text-gray-300">Amber glass + desiccant</p>
+            </div>
+          </div>
+          
+          <div className="text-center mb-8">
             <a 
-              href="/"
-              className="inline-block bg-accent hover:bg-accent-dark text-primary font-semibold px-12 py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-xl"
+              href="/?utm_source=reddit&utm_campaign=prelander&utm_content=mechanism_cta"
+              onClick={() => handleCTAClick('mechanism_primary')}
+              className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-10 md:px-14 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-lg md:text-xl w-full md:w-auto"
+              style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
             >
               Continue →
             </a>
-            <p className="text-sm text-gray-400 mt-4">
+            <p className="text-xs md:text-sm text-gray-400 mt-3">
               Full research breakdown, user protocols, and purity data
             </p>
           </div>
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-12 px-4 bg-secondary/30">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+            Common Questions
+          </h2>
+          
+          <div className="space-y-4">
+            <div className="bg-primary p-5 rounded-lg border border-accent/20">
+              <h3 className="font-bold text-lg text-accent mb-2">Is this legal to buy?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Yes. ISRIB A15 is sold as a research compound for scientific investigation. It is not FDA-approved as a drug or supplement and is not intended for human consumption outside of research contexts.
+              </p>
+            </div>
+            
+            <div className="bg-primary p-5 rounded-lg border border-accent/20">
+              <h3 className="font-bold text-lg text-accent mb-2">Is it a supplement?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                No. ISRIB A15 is a research chemical, not a dietary supplement. It does not have FDA approval for any medical condition and is not marketed as a treatment.
+              </p>
+            </div>
+            
+            <div className="bg-primary p-5 rounded-lg border border-accent/20">
+              <h3 className="font-bold text-lg text-accent mb-2">What's included with purchase?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Each order includes the compound (98.7%+ purity), a Certificate of Analysis (COA) with batch-specific testing data, and research documentation on the ISR pathway mechanism.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer Disclaimer */}
       <footer className="py-8 px-4 bg-primary border-t border-accent/20">
-        <div className="max-w-3xl mx-auto text-center text-sm text-gray-400">
+        <div className="max-w-3xl mx-auto text-center text-xs md:text-sm text-gray-400">
           <p className="mb-2">
             <strong>Research Compound:</strong> ISRIB A15 is not FDA-approved and is not intended to diagnose, treat, cure, or prevent any disease. Information provided is for educational and research purposes only.
+          </p>
+          <p className="text-xs text-gray-500">
+            By continuing, you acknowledge this is a research compound intended for scientific investigation only.
           </p>
         </div>
       </footer>
