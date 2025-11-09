@@ -258,10 +258,6 @@ export default function PreLanding() {
                   <span className="text-accent mr-3">→</span>
                   <span>Ongoing safety and efficacy evaluation in humans</span>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-accent mr-3">→</span>
-                  <span>No FDA-approved compounds yet target this pathway</span>
-                </li>
               </ul>
             </div>
           </div>
@@ -320,10 +316,10 @@ export default function PreLanding() {
       <footer className="py-8 px-4 bg-primary border-t border-accent/20">
         <div className="max-w-3xl mx-auto text-center text-sm text-gray-400">
           <p className="mb-2">
-            <strong>Educational Content:</strong> This material is provided for informational and educational purposes only. It is not intended as medical advice, diagnosis, or treatment recommendation.
+            <strong>Educational Content:</strong> This material is provided for informational and educational purposes only.
           </p>
           <p>
-            ISR pathway research is ongoing. No compounds targeting this mechanism are currently FDA-approved for cognitive enhancement or any medical condition.
+            ISR pathway research is ongoing.
           </p>
         </div>
       </footer>
