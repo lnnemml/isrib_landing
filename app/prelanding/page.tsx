@@ -40,12 +40,12 @@ export default function PreLanding() {
             <span className="text-accent">It's Being Biochemically Restricted.</span>
           </h1>
           
-          <p className="text-base md:text-lg text-gray-300 mb-3 leading-relaxed text-center" style={{lineHeight: '1.7'}}>
-            A specific cellular stress-response pathway (ISR) can suppress cognitive clarity, memory recall, and learning efficiency — especially after prolonged stress, overwork, or neurological strain.
+          <p className="text-lg md:text-xl text-accent font-semibold mb-4 text-center leading-relaxed">
+            For thinkers, builders, founders — those who refuse to operate below their potential.
           </p>
           
-          <p className="text-lg md:text-xl text-accent font-semibold mb-6 text-center">
-            Back to clear, steady thinking in deep work sessions.
+          <p className="text-base md:text-lg text-gray-300 mb-4 leading-relaxed text-center" style={{lineHeight: '1.7'}}>
+            A specific cellular stress-response pathway (ISR) can suppress cognitive clarity, memory recall, and learning efficiency — especially after prolonged stress, overwork, or neurological strain.
           </p>
           
           {/* Social Proof - Factual Context */}
@@ -60,38 +60,44 @@ export default function PreLanding() {
             </div>
           </div>
           
-          {/* Moved Qualification Up */}
+          {/* Moved Qualification Up - with specific behavioral changes */}
           <div className="bg-secondary/60 border border-accent/20 rounded-lg p-4 md:p-6 mb-6">
-            <h2 className="text-lg md:text-xl font-bold mb-3 text-center">This Is For You If:</h2>
-            <ul className="space-y-2 text-sm md:text-base text-gray-300">
-              <li className="flex items-start">
-                <span className="text-accent mr-2 mt-1">→</span>
-                <span>You experience brain fog after periods of high stress or intense work</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent mr-2 mt-1">→</span>
-                <span>You struggle to maintain focus for more than 45 minutes at a time</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent mr-2 mt-1">→</span>
-                <span>You feel mentally fatigued even after a full night's sleep</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent mr-2 mt-1">→</span>
-                <span>Your thinking used to be sharper, and you want that clarity back</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent mr-2 mt-1">→</span>
-                <span>You want restoration, not stimulation</span>
-              </li>
-            </ul>
+            <h2 className="text-lg md:text-xl font-bold mb-4 text-center">What Changes You'll Notice:</h2>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <span className="text-accent text-xl mt-1 flex-shrink-0">→</span>
+                <div>
+                  <p className="font-semibold text-accent text-sm md:text-base">Instead of scattered focus:</p>
+                  <p className="text-sm md:text-base text-gray-300">You can sit and actually finish the thing you've been avoiding for weeks.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <span className="text-accent text-xl mt-1 flex-shrink-0">→</span>
+                <div>
+                  <p className="font-semibold text-accent text-sm md:text-base">Instead of mental fog:</p>
+                  <p className="text-sm md:text-base text-gray-300">Thoughts stop feeling "foggy" — you think in straight lines again.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <span className="text-accent text-xl mt-1 flex-shrink-0">→</span>
+                <div>
+                  <p className="font-semibold text-accent text-sm md:text-base">Instead of forced effort:</p>
+                  <p className="text-sm md:text-base text-gray-300">Work doesn't feel like pushing a boulder uphill — effort starts to feel natural.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <span className="text-accent text-xl mt-1 flex-shrink-0">→</span>
+                <div>
+                  <p className="font-semibold text-accent text-sm md:text-base">Instead of mental fatigue after stress:</p>
+                  <p className="text-sm md:text-base text-gray-300">Your thinking used to be sharper — this helps you get that clarity back.</p>
+                </div>
+              </div>
+            </div>
           </div>
           
-          <div className="bg-secondary/50 border-l-4 border-accent p-4 md:p-5 rounded-r-lg mb-6 max-w-2xl mx-auto">
-            <p className="text-sm md:text-base text-gray-300 leading-relaxed italic">
-              I've seen people push themselves hard — work, study, burnout — and feel their mind "slip" even while their motivation stays high. That's why I started researching ISR modulation.
-            </p>
-          </div>
           
           {/* Primary CTA - Multiple Options */}
           <div className="text-center space-y-3">
@@ -101,7 +107,7 @@ export default function PreLanding() {
               className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-8 md:px-12 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-base md:text-lg w-full md:w-auto"
               style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
             >
-              See the Research Details →
+              See How ISRIB Works in the Brain →
             </a>
             
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
@@ -110,7 +116,7 @@ export default function PreLanding() {
                 onClick={() => handleCTAClick('hero_secondary')}
                 className="text-accent hover:text-accent-dark font-semibold text-sm underline"
               >
-                How it's different
+                View the mechanism
               </a>
               <span className="hidden sm:inline text-gray-500">•</span>
               <a 
@@ -118,7 +124,7 @@ export default function PreLanding() {
                 onClick={() => handleCTAClick('hero_tertiary')}
                 className="text-accent hover:text-accent-dark font-semibold text-sm underline"
               >
-                View purity data
+                See purity data
               </a>
             </div>
             
@@ -225,10 +231,10 @@ export default function PreLanding() {
               className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-10 md:px-14 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-lg md:text-xl w-full md:w-auto"
               style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
             >
-              Continue →
+              See Full Research & Protocols →
             </a>
             <p className="text-xs md:text-sm text-gray-400 mt-3">
-              Full research breakdown, user protocols, and purity data
+              Complete breakdown • User protocols • Purity verification
             </p>
           </div>
         </div>
