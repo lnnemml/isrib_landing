@@ -44,6 +44,10 @@ export default function PreLanding() {
             For thinkers, builders, founders — those who refuse to operate below their potential.
           </p>
           
+          <p className="text-base md:text-lg text-gray-300 mb-6 text-center italic leading-relaxed" style={{lineHeight: '1.7'}}>
+            If your thinking feels slower than before — even though your drive and discipline haven't changed — you're in the right place.
+          </p>
+          
           <p className="text-base md:text-lg text-gray-300 mb-4 leading-relaxed text-center" style={{lineHeight: '1.7'}}>
             A specific cellular stress-response pathway (ISR) can suppress cognitive clarity, memory recall, and learning efficiency — especially after prolonged stress, overwork, or neurological strain.
           </p>
