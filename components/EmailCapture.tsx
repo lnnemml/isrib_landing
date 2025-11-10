@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackEmailCapture } from '@/lib/analytics';
 
 interface EmailCaptureProps {
   isOpen: boolean;
@@ -34,6 +35,9 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
       if (!response.ok) {
         throw new Error('Failed to subscribe');
       }
+      
+      // Track email capture
+      trackEmailCapture('landing_page_modal');
       
       setIsSubmitting(false);
       setIsSubmitted(true);
