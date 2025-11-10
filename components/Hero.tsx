@@ -1,10 +1,19 @@
 'use client';
 
+import { trackButtonClick } from '@/lib/analytics';
+
 interface HeroProps {
   onOpenEmail: () => void;
 }
 
 export default function Hero({ onOpenEmail }: HeroProps) {
+  const handleCTAClick = (type: 'primary' | 'secondary') => {
+    trackButtonClick(
+      type === 'primary' ? 'Try ISRIB A15' : 'Get the Full Story',
+      'hero'
+    );
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
       {/* Background gradient */}
@@ -41,12 +50,16 @@ export default function Hero({ onOpenEmail }: HeroProps) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <a 
             href="https://isrib.shop/buy-1g.html"
+            onClick={() => handleCTAClick('primary')}
             className="btn-primary w-full sm:w-auto"
           >
             Try ISRIB A15
           </a>
           <button 
-            onClick={onOpenEmail}
+            onClick={() => {
+              handleCTAClick('secondary');
+              onOpenEmail();
+            }}
             className="btn-secondary w-full sm:w-auto"
           >
             Get the Full Story
