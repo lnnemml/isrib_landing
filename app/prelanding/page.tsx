@@ -106,7 +106,7 @@ export default function PreLanding() {
           {/* Why Continue - Reinforcement */}
           <div className="bg-accent/5 border border-accent/20 rounded-lg p-4 md:p-5 mb-6 max-w-2xl mx-auto">
             <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-              <span className="font-semibold text-accent">Why continue:</span> If you recognize yourself in this pattern, understanding the ISR pathway is likely more important than trying "more stimulants" or "more willpower." This is about removing friction—not pushing harder.
+              <span className="font-semibold text-accent">Why continue:</span> If you recognize yourself in this pattern, understanding the ISR pathway is likely more important than trying "more stimulants" or "more willpower." This is about removing friction, not pushing harder.
             </p>
           </div>
           
