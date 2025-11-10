@@ -1,6 +1,36 @@
+'use client';
+
+import { trackButtonClick, trackProductView } from '@/lib/analytics';
+import { useEffect } from 'react';
+
 export default function CTASection() {
+  // Track product view when section becomes visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            trackProductView('ISRIB A15 500mg', 130);
+            trackProductView('ISRIB A15 1g', 200);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const section = document.getElementById('cta-section');
+    if (section) observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleCTAClick = (product: string, price: number) => {
+    trackButtonClick(`Order ${product}`, 'cta_section');
+  };
+
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-secondary to-primary">
+    <section id="cta-section" className="py-20 px-4 bg-gradient-to-b from-secondary to-primary">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <div className="inline-block bg-accent/20 border border-accent px-6 py-2 rounded-full mb-4">
@@ -55,6 +85,7 @@ export default function CTASection() {
             
             <a 
               href="https://isrib.shop/buy-500mg.html" 
+              onClick={() => handleCTAClick('500mg', 130)}
               className="block btn-primary text-center"
             >
               Order 500mg
@@ -102,6 +133,7 @@ export default function CTASection() {
             
             <a 
               href="https://isrib.shop/buy-1g.html" 
+              onClick={() => handleCTAClick('1g', 200)}
               className="block btn-primary text-center"
             >
               Order 1g
