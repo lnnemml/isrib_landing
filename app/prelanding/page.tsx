@@ -286,11 +286,11 @@ export default function PreLanding() {
             
             <div className="space-y-4 text-gray-300 leading-relaxed">
               <p className="text-base md:text-lg">
-                I'm a chemist focused on neuro-related research compounds. I oversee synthesis, purification and batch verification (LC-MS / NMR) and handle all packaging in-house.
+                Synthesis, purification and batch verification (LC-MS / NMR) are handled in-house, rather than outsourced.
               </p>
               
               <p className="text-base md:text-lg font-semibold text-accent">
-                This isn't a resold material or third-party bulk supply. It's controlled research-grade production with full traceability.
+                Production follows research-grade process controls, not bulk-resale supply.
               </p>
               
               <div className="grid md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-accent/20">
