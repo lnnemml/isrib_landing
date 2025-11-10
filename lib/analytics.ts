@@ -18,6 +18,15 @@ export interface RedditEvent {
   [key: string]: any;
 }
 
+// Type declarations
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+    rdt: any;
+  }
+}
+
 // ============================================
 // GOOGLE ANALYTICS 4
 // ============================================
@@ -25,7 +34,7 @@ export interface RedditEvent {
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
 // Initialize GA4
-export const initGA = () => {
+export const initGA = (): void => {
   if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) return;
   
   // Load gtag script
@@ -51,7 +60,7 @@ export const initGA = () => {
 };
 
 // Track pageview
-export const trackPageview = (url: string) => {
+export const trackPageview = (url: string): void => {
   if (typeof window === 'undefined' || !window.gtag) return;
   
   window.gtag('config', GA_MEASUREMENT_ID, {
@@ -60,7 +69,7 @@ export const trackPageview = (url: string) => {
 };
 
 // Track GA4 event
-export const trackGAEvent = ({ action, category, label, value }: GAEvent) => {
+export const trackGAEvent = ({ action, category, label, value }: GAEvent): void => {
   if (typeof window === 'undefined' || !window.gtag) return;
   
   window.gtag('event', action, {
@@ -79,7 +88,7 @@ export const trackGAEvent = ({ action, category, label, value }: GAEvent) => {
 export const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID || '';
 
 // Initialize Reddit Pixel
-export const initRedditPixel = () => {
+export const initRedditPixel = (): void => {
   if (typeof window === 'undefined' || !REDDIT_PIXEL_ID) return;
 
   // Load Reddit Pixel script
@@ -113,7 +122,7 @@ export const initRedditPixel = () => {
 };
 
 // Track Reddit event
-export const trackRedditEvent = ({ event, customEventName, value, currency = 'USD', itemCount, ...params }: RedditEvent) => {
+export const trackRedditEvent = ({ event, customEventName, value, currency = 'USD', itemCount, ...params }: RedditEvent): void => {
   if (typeof window === 'undefined' || !window.rdt) return;
 
   const eventData: any = {
@@ -142,13 +151,13 @@ export const trackRedditEvent = ({ event, customEventName, value, currency = 'US
 // ============================================
 
 // Track page view on both platforms
-export const trackPage = (url: string) => {
+export const trackPage = (url: string): void => {
   trackPageview(url);
   trackRedditEvent({ event: 'PageVisit' });
 };
 
 // Track email capture
-export const trackEmailCapture = (source: string) => {
+export const trackEmailCapture = (source: string): void => {
   // GA4
   trackGAEvent({
     action: 'email_capture',
@@ -166,7 +175,7 @@ export const trackEmailCapture = (source: string) => {
 };
 
 // Track button click
-export const trackButtonClick = (buttonName: string, location: string) => {
+export const trackButtonClick = (buttonName: string, location: string): void => {
   // GA4
   trackGAEvent({
     action: 'button_click',
@@ -184,7 +193,7 @@ export const trackButtonClick = (buttonName: string, location: string) => {
 };
 
 // Track product view
-export const trackProductView = (productName: string, productPrice: number) => {
+export const trackProductView = (productName: string, productPrice: number): void => {
   // GA4
   trackGAEvent({
     action: 'view_item',
@@ -204,7 +213,7 @@ export const trackProductView = (productName: string, productPrice: number) => {
 };
 
 // Track add to cart
-export const trackAddToCart = (productName: string, productPrice: number, quantity: number) => {
+export const trackAddToCart = (productName: string, productPrice: number, quantity: number): void => {
   // GA4
   trackGAEvent({
     action: 'add_to_cart',
@@ -224,9 +233,9 @@ export const trackAddToCart = (productName: string, productPrice: number, quanti
 };
 
 // Track purchase
-export const trackPurchase = (orderId: string, value: number, productName: string, quantity: number) => {
+export const trackPurchase = (orderId: string, value: number, productName: string, quantity: number): void => {
   // GA4
-  if (window.gtag) {
+  if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'purchase', {
       transaction_id: orderId,
       value: value,
@@ -252,15 +261,3 @@ export const trackPurchase = (orderId: string, value: number, productName: strin
 
   console.log('💰 Purchase tracked:', { orderId, value, productName, quantity });
 };
-
-// ============================================
-// TYPE DECLARATIONS
-// ============================================
-
-declare global {
-  interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
-    rdt: any;
-  }
-}
