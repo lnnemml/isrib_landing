@@ -34,7 +34,7 @@ export default function PreLanding() {
         <div className="absolute inset-0 bg-gradient-to-b from-secondary via-primary to-primary opacity-50"></div>
         
         <div className="relative z-10 max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-center" style={{lineHeight: '1.45', letterSpacing: '-0.1px'}}>
             Your Brain Isn't "Underperforming."
             <br />
             <span className="text-accent">It's Being Biochemically Restricted.</span>
@@ -102,6 +102,13 @@ export default function PreLanding() {
             </div>
           </div>
           
+          
+          {/* Why Continue - Reinforcement */}
+          <div className="bg-accent/5 border border-accent/20 rounded-lg p-4 md:p-5 mb-6 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+              <span className="font-semibold text-accent">Why continue:</span> If you recognize yourself in this pattern, understanding the ISR pathway is likely more important than trying "more stimulants" or "more willpower." This is about removing friction—not pushing harder.
+            </p>
+          </div>
           
           {/* Primary CTA - Multiple Options */}
           <div className="text-center space-y-3">
