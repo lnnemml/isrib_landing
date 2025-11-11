@@ -18,12 +18,12 @@ export interface RedditEvent {
   [key: string]: any;
 }
 
-// Type declarations
+// Type declarations - unified for the entire app
 declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
-    rdt: any;
+    rdt: (...args: any[]) => void;
   }
 }
 
@@ -94,8 +94,8 @@ export const initRedditPixel = (): void => {
   // Load Reddit Pixel script
   !(function(w: any, d: Document) {
     if (!w.rdt) {
-      const p = w.rdt = function() {
-        p.sendEvent ? p.sendEvent.apply(p, arguments) : p.callQueue.push(arguments);
+      const p = w.rdt = function(...args: any[]) {
+        p.sendEvent ? p.sendEvent.apply(p, args) : p.callQueue.push(args);
       };
       p.callQueue = [];
       const t = d.createElement('script');
