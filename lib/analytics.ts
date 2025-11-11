@@ -94,7 +94,7 @@ export const initRedditPixel = (): void => {
   // Load Reddit Pixel script
   (function(w: any, d: Document) {
     if (!w.rdt) {
-      const p = (w.rdt = function(...args: any[]) {
+      const p: any = (w.rdt = function(...args: any[]) {
         if (p.sendEvent) {
           p.sendEvent.apply(p, args);
         } else {
@@ -102,6 +102,7 @@ export const initRedditPixel = (): void => {
         }
       });
       p.callQueue = [];
+      p.sendEvent = null;
       const t = d.createElement('script');
       t.src = 'https://www.redditstatic.com/ads/pixel.js';
       t.async = true;
