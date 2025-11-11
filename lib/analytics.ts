@@ -23,7 +23,7 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
-    rdt: (...args: any[]) => void;
+    rdt: any;
   }
 }
 
@@ -92,17 +92,23 @@ export const initRedditPixel = (): void => {
   if (typeof window === 'undefined' || !REDDIT_PIXEL_ID) return;
 
   // Load Reddit Pixel script
-  !(function(w: any, d: Document) {
+  (function(w: any, d: Document) {
     if (!w.rdt) {
-      const p = w.rdt = function(...args: any[]) {
-        p.sendEvent ? p.sendEvent.apply(p, args) : p.callQueue.push(args);
-      };
+      const p = (w.rdt = function(...args: any[]) {
+        if (p.sendEvent) {
+          p.sendEvent.apply(p, args);
+        } else {
+          p.callQueue.push(args);
+        }
+      });
       p.callQueue = [];
       const t = d.createElement('script');
       t.src = 'https://www.redditstatic.com/ads/pixel.js';
       t.async = true;
       const s = d.getElementsByTagName('script')[0];
-      s.parentNode!.insertBefore(t, s);
+      if (s && s.parentNode) {
+        s.parentNode.insertBefore(t, s);
+      }
     }
   })(window, document);
 
