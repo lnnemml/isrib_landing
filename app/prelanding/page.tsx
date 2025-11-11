@@ -1,30 +1,10 @@
 'use client';
 
-// Extend Window interface for gtag
-declare global {
-  interface Window {
-    gtag?: (
-      command: string,
-      action: string,
-      params: {
-        event_category?: string;
-        event_label?: string;
-        value?: number;
-      }
-    ) => void;
-  }
-}
+import { trackButtonClick } from '@/lib/analytics';
 
 export default function PreLanding() {
   const handleCTAClick = (location: string) => {
-    // Track CTA clicks
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'prelander_cta_click', {
-        event_category: 'engagement',
-        event_label: location,
-        value: 1
-      });
-    }
+    trackButtonClick('prelander_cta', location);
   };
 
   return (
