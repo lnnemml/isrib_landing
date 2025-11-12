@@ -2,7 +2,7 @@
 
 import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { initDataLayer, initRedditPixel, trackPage } from '@/lib/analytics';
+import { initDataLayer, initRedditPixel, initScrollTracking, trackPage } from '@/lib/analytics';
 
 function AnalyticsContent() {
   const pathname = usePathname();
@@ -17,7 +17,10 @@ function AnalyticsContent() {
     // If you manage Reddit Pixel via GTM, you can comment this out
     initRedditPixel();
     
-    console.log('✅ Analytics initialized (GTM-only mode)');
+    // Initialize scroll depth tracking
+    initScrollTracking();
+    
+    console.log('✅ Analytics initialized (GTM + Scroll tracking)');
   }, []);
 
   // Track page changes
