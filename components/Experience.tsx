@@ -1,4 +1,12 @@
+'use client';
+
+import { trackBuyClick } from '@/lib/analytics';
+
 export default function Experience() {
+  const handleBuyClick = () => {
+    trackBuyClick('1g', 200, 'experience_section');
+  };
+
   return (
     <section className="py-20 px-4">
       <div className="max-w-5xl mx-auto">
@@ -153,6 +161,7 @@ export default function Experience() {
         <div className="text-center">
           <a 
             href="https://isrib.shop/buy-1g.html"
+            onClick={handleBuyClick}
             className="btn-primary inline-block text-lg px-12 py-5"
           >
             Start Your Trial
