@@ -2,7 +2,7 @@
 
 import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { initDataLayer, initGA, initRedditPixel, trackPage } from '@/lib/analytics';
+import { initDataLayer, initRedditPixel, trackPage } from '@/lib/analytics';
 
 function AnalyticsContent() {
   const pathname = usePathname();
@@ -13,13 +13,11 @@ function AnalyticsContent() {
     // Initialize dataLayer FIRST (before GTM script runs)
     initDataLayer();
     
-    // Then initialize GA4 (only if GTM doesn't handle it)
-    initGA();
-    
-    // Initialize Reddit Pixel
+    // Initialize Reddit Pixel (if you want direct tracking)
+    // If you manage Reddit Pixel via GTM, you can comment this out
     initRedditPixel();
     
-    console.log('✅ Analytics initialized');
+    console.log('✅ Analytics initialized (GTM-only mode)');
   }, []);
 
   // Track page changes
