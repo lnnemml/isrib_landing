@@ -12,34 +12,48 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState('');
   
   if (!isOpen) return null;
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
     
     try {
+      // Send to n8n webhook
       const response = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          email,
+          email: email.trim().toLowerCase(),
           source: 'landing_page_modal',
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          utm_source: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_source') : null,
+          utm_medium: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_medium') : null,
+          utm_campaign: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_campaign') : null,
+          page_url: typeof window !== 'undefined' ? window.location.href : null,
         }),
       });
       
+      // Check if webhook accepted the request
       if (!response.ok) {
-        throw new Error('Failed to subscribe');
+        const errorText = await response.text();
+        console.error('Webhook error:', response.status, errorText);
+        throw new Error(`Webhook returned ${response.status}`);
       }
       
-      // Track email capture
-      trackEmailCapture('landing_page_modal');
+      // Track email capture in analytics
+      try {
+        trackEmailCapture('landing_page_modal');
+      } catch (analyticsError) {
+        console.error('Analytics tracking error:', analyticsError);
+        // Don't fail the submission if analytics fails
+      }
       
-      setIsSubmitting(false);
       setIsSubmitted(true);
       
       // Close modal after showing success
@@ -47,17 +61,40 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
         onClose();
         setIsSubmitted(false);
         setEmail('');
-      }, 2000);
+        setError('');
+      }, 2500);
     } catch (error) {
       console.error('Email submission error:', error);
+      setError('Failed to subscribe. Please try again.');
+      
+      // Auto-retry once after 1 second
+      setTimeout(async () => {
+        try {
+          const retryResponse = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              email: email.trim().toLowerCase(),
+              source: 'landing_page_modal_retry',
+              timestamp: new Date().toISOString(),
+            }),
+          });
+          
+          if (retryResponse.ok) {
+            setError('');
+            setIsSubmitted(true);
+            setTimeout(() => {
+              onClose();
+              setIsSubmitted(false);
+              setEmail('');
+            }, 2500);
+          }
+        } catch (retryError) {
+          console.error('Retry failed:', retryError);
+        }
+      }, 1000);
+    } finally {
       setIsSubmitting(false);
-      // Still show success to user even if there's an error
-      setIsSubmitted(true);
-      setTimeout(() => {
-        onClose();
-        setIsSubmitted(false);
-        setEmail('');
-      }, 2000);
     }
   };
   
@@ -108,6 +145,10 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
                 required
                 className="w-full px-4 py-3 bg-primary border border-accent/30 rounded-lg mb-4 text-white focus:outline-none focus:border-accent"
               />
+              
+              {error && (
+                <p className="text-red-400 text-sm mb-4">{error}</p>
+              )}
               
               <button
                 type="submit"
