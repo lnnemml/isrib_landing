@@ -1,6 +1,6 @@
 'use client';
 
-import { trackButtonClick, trackProductView } from '@/lib/analytics';
+import { trackProductView, trackBuyClick } from '@/lib/analytics';
 import { useEffect } from 'react';
 
 export default function CTASection() {
@@ -25,8 +25,8 @@ export default function CTASection() {
     return () => observer.disconnect();
   }, []);
 
-  const handleCTAClick = (product: string, price: number) => {
-    trackButtonClick(`Order ${product}`, 'cta_section');
+  const handleBuyClick = (product: '500mg' | '1g', price: number, location: string) => {
+    trackBuyClick(product, price, location);
   };
 
   return (
@@ -85,7 +85,7 @@ export default function CTASection() {
             
             <a 
               href="https://isrib.shop/buy-500mg.html" 
-              onClick={() => handleCTAClick('500mg', 130)}
+              onClick={() => handleBuyClick('500mg', 130, 'cta_section')}
               className="block btn-primary text-center"
             >
               Order 500mg
@@ -133,7 +133,7 @@ export default function CTASection() {
             
             <a 
               href="https://isrib.shop/buy-1g.html" 
-              onClick={() => handleCTAClick('1g', 200)}
+              onClick={() => handleBuyClick('1g', 200, 'cta_section')}
               className="block btn-primary text-center"
             >
               Order 1g
