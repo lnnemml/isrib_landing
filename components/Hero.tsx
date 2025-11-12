@@ -1,6 +1,6 @@
 'use client';
 
-import { trackButtonClick } from '@/lib/analytics';
+import { trackButtonClick, trackBuyClick } from '@/lib/analytics';
 
 interface HeroProps {
   onOpenEmail: () => void;
@@ -8,10 +8,12 @@ interface HeroProps {
 
 export default function Hero({ onOpenEmail }: HeroProps) {
   const handleCTAClick = (type: 'primary' | 'secondary') => {
-    trackButtonClick(
-      type === 'primary' ? 'Try ISRIB A15' : 'Get the Full Story',
-      'hero'
-    );
+    if (type === 'primary') {
+      // This is a buy button, track it properly
+      trackBuyClick('1g', 200, 'hero');
+    } else {
+      trackButtonClick('Get the Full Story', 'hero');
+    }
   };
 
   return (
