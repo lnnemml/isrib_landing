@@ -1,4 +1,10 @@
+import { trackBuyClick } from '@/lib/analytics';
+
 export default function Discovery() {
+  const handleBuyClick = () => {
+    trackBuyClick('1g', 200, 'discovery_section');
+  };
+
   return (
     <section className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
@@ -101,6 +107,7 @@ export default function Discovery() {
         <div className="mt-12 text-center">
           <a 
             href="https://isrib.shop/buy-1g.html"
+            onClick={handleBuyClick}
             className="btn-primary inline-block"
           >
             Try ISRIB A15
