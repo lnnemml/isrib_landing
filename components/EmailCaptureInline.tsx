@@ -14,20 +14,28 @@ export default function EmailCaptureInline() {
     setError('');
     
     try {
+      // Send to n8n webhook
       const response = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          email,
+          email: email.trim().toLowerCase(),
           source: 'landing_page_inline',
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          utm_source: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_source') : null,
+          utm_medium: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_medium') : null,
+          utm_campaign: typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('utm_campaign') : null,
+          page_url: typeof window !== 'undefined' ? window.location.href : null,
         }),
       });
       
+      // Check if webhook accepted the request
       if (!response.ok) {
-        throw new Error('Failed to subscribe');
+        const errorText = await response.text();
+        console.error('Webhook error:', response.status, errorText);
+        throw new Error(`Webhook returned ${response.status}`);
       }
       
       setIsSubmitted(true);
@@ -38,8 +46,32 @@ export default function EmailCaptureInline() {
         setIsSubmitted(false);
       }, 5000);
     } catch (err) {
-      setError('Something went wrong. Please try again.');
       console.error('Email submission error:', err);
+      setError('Something went wrong. Please try again.');
+      
+      // Auto-retry once after 1 second
+      setTimeout(async () => {
+        try {
+          const retryResponse = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              email: email.trim().toLowerCase(),
+              source: 'landing_page_inline_retry',
+              timestamp: new Date().toISOString(),
+            }),
+          });
+          
+          if (retryResponse.ok) {
+            setError('');
+            setIsSubmitted(true);
+            setEmail('');
+            setTimeout(() => setIsSubmitted(false), 5000);
+          }
+        } catch (retryError) {
+          console.error('Retry failed:', retryError);
+        }
+      }, 1000);
     } finally {
       setIsSubmitting(false);
     }
