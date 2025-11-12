@@ -1,10 +1,16 @@
 'use client';
 
-import { trackButtonClick } from '@/lib/analytics';
+import { useEffect } from 'react';
+import { trackPrelandingView, trackPrelandingCTA } from '@/lib/analytics';
 
 export default function PreLanding() {
+  // Track prelanding view on mount
+  useEffect(() => {
+    trackPrelandingView();
+  }, []);
+
   const handleCTAClick = (location: string) => {
-    trackButtonClick('prelander_cta', location);
+    trackPrelandingCTA(location);
   };
 
   return (
