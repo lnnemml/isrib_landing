@@ -1,10 +1,11 @@
 // lib/analytics.ts
-// MINIMAL GTM - Only essential events for traffic analysis
+// Complete GTM tracking for Reddit Ads -> Prelanding -> Landing -> Purchase funnel
 
 // Type declarations
 declare global {
   interface Window {
     dataLayer: any[];
+    rdt?: any;
   }
 }
 
@@ -13,12 +14,13 @@ declare global {
 // ============================================
 
 export const GTM_ID = 'GTM-M2QCB45Q';
+export const REDDIT_PIXEL_ID = 't2_wsjciqh5'; // Your Reddit Pixel ID
 
 // Debug mode
 const DEBUG = process.env.NODE_ENV === 'development';
 
 const log = (...args: any[]) => {
-  if (DEBUG) console.log('📊 GTM:', ...args);
+  if (DEBUG) console.log('📊 Analytics:', ...args);
 };
 
 // ============================================
@@ -33,6 +35,22 @@ export const initDataLayer = (): void => {
   log('✅ DataLayer initialized');
 };
 
+// Initialize Reddit Pixel
+export const initRedditPixel = (): void => {
+  if (typeof window === 'undefined') return;
+  
+  if (!window.rdt) {
+    const script = document.createElement('script');
+    script.innerHTML = `
+      !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+      rdt('init','${REDDIT_PIXEL_ID}', {"optOut":false,"useDecimalCurrencyValues":true});
+      rdt('track', 'PageVisit');
+    `;
+    document.head.appendChild(script);
+    log('✅ Reddit Pixel initialized');
+  }
+};
+
 // Push events to GTM dataLayer
 export const pushToDataLayer = (event: any): void => {
   if (typeof window === 'undefined') return;
@@ -42,28 +60,71 @@ export const pushToDataLayer = (event: any): void => {
   }
   
   window.dataLayer.push(event);
-  log('Event pushed:', event);
+  log('Event pushed to GTM:', event);
+};
+
+// Push events to Reddit Pixel
+export const pushToReddit = (eventName: string, customData?: any): void => {
+  if (typeof window === 'undefined') return;
+  
+  if (window.rdt) {
+    window.rdt('track', eventName, customData);
+    log('Event pushed to Reddit:', eventName, customData);
+  }
 };
 
 // ============================================
-// TRACKING FUNCTIONS
+// PAGE TRACKING
 // ============================================
 
-// 1. Track prelanding view
+// Track page view
+export const trackPage = (url: string): void => {
+  const isPrelandingPage = url.includes('/research');
+  const isLandingPage = !isPrelandingPage && url === '/';
+  
+  pushToDataLayer({
+    event: 'page_view',
+    page_url: url,
+    page_type: isPrelandingPage ? 'prelanding' : isLandingPage ? 'landing' : 'other',
+  });
+  
+  log('Page view:', url);
+};
+
+// ============================================
+// FUNNEL TRACKING
+// ============================================
+
+// 1. Track prelanding view (from Reddit Ads)
 export const trackPrelandingView = (): void => {
+  // GTM Event
   pushToDataLayer({
     event: 'prelanding_view',
     page_type: 'prelanding',
+    funnel_step: 1,
   });
   
-  log('Prelanding view');
+  // Reddit Pixel
+  pushToReddit('ViewContent', {
+    page_type: 'prelanding'
+  });
+  
+  log('Prelanding view tracked');
 };
 
 // 2. Track prelanding CTA click
 export const trackPrelandingCTA = (location: string): void => {
+  // GTM Event
   pushToDataLayer({
     event: 'prelanding_cta_click',
     cta_location: location,
+    funnel_step: 2,
+  });
+  
+  // Reddit Pixel
+  pushToReddit('Custom', {
+    event_name: 'PrelandingCTAClick',
+    cta_location: location
   });
   
   log('Prelanding CTA click:', location);
@@ -71,34 +132,133 @@ export const trackPrelandingCTA = (location: string): void => {
 
 // 3. Track landing view from prelanding
 export const trackLandingViewFromPrelanding = (): void => {
+  // GTM Event
   pushToDataLayer({
     event: 'landing_view_from_prelanding',
     page_type: 'landing',
     source: 'prelanding',
+    funnel_step: 3,
   });
   
-  log('Landing view from prelanding');
+  // Reddit Pixel
+  pushToReddit('ViewContent', {
+    page_type: 'landing',
+    source: 'prelanding'
+  });
+  
+  log('Landing view from prelanding tracked');
 };
 
-// 4. Track email capture
+// ============================================
+// CONVERSION TRACKING
+// ============================================
+
+// Track email capture
 export const trackEmailCapture = (source: string): void => {
+  // GTM Event
   pushToDataLayer({
     event: 'email_capture',
     capture_source: source,
+    funnel_step: 4,
+  });
+  
+  // Reddit Pixel - Lead event
+  pushToReddit('Lead', {
+    capture_source: source
   });
   
   log('Email capture:', source);
 };
 
-// 5. Track buy button click
-export const trackBuyClick = (product: '500mg' | '1g', price: number, location: string): void => {
+// Track buy button click (before leaving to checkout)
+export const trackBuyClick = (
+  product: '500mg' | '1g', 
+  price: number, 
+  location: string
+): void => {
+  // GTM Event
   pushToDataLayer({
     event: 'buy_click',
     product_sku: product,
     product_price: price,
     button_location: location,
     destination_url: `https://isrib.shop/buy-${product}.html`,
+    funnel_step: 5,
   });
   
-  log('Buy click:', { product, price, location });
+  // Reddit Pixel - AddToCart event
+  pushToReddit('AddToCart', {
+    itemCount: 1,
+    products: [{
+      id: `ISRIB-A15-${product}`,
+      name: `ISRIB A15 ${product}`,
+      category: 'Research Compounds',
+    }],
+    value: price,
+    currency: 'USD',
+  });
+  
+  log('Buy click tracked:', { product, price, location });
+};
+
+// Track product view (when user sees pricing section)
+export const trackProductView = (productName: string, price: number): void => {
+  pushToDataLayer({
+    event: 'product_view',
+    product_name: productName,
+    product_price: price,
+  });
+  
+  log('Product view:', productName);
+};
+
+// Track general button clicks
+export const trackButtonClick = (buttonName: string, location: string): void => {
+  pushToDataLayer({
+    event: 'button_click',
+    button_name: buttonName,
+    button_location: location,
+  });
+  
+  log('Button click:', buttonName, location);
+};
+
+// ============================================
+// PURCHASE TRACKING (if you add checkout on your site later)
+// ============================================
+
+// Track completed purchase
+export const trackPurchase = (
+  orderId: string,
+  product: string,
+  price: number
+): void => {
+  // GTM Event
+  pushToDataLayer({
+    event: 'purchase',
+    transaction_id: orderId,
+    value: price,
+    currency: 'USD',
+    items: [{
+      item_id: `ISRIB-A15-${product}`,
+      item_name: `ISRIB A15 ${product}`,
+      price: price,
+      quantity: 1,
+    }],
+    funnel_step: 6,
+  });
+  
+  // Reddit Pixel - Purchase event
+  pushToReddit('Purchase', {
+    transactionId: orderId,
+    value: price,
+    currency: 'USD',
+    products: [{
+      id: `ISRIB-A15-${product}`,
+      name: `ISRIB A15 ${product}`,
+      category: 'Research Compounds',
+    }],
+  });
+  
+  log('Purchase tracked:', { orderId, product, price });
 };
