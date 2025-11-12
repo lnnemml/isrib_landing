@@ -80,6 +80,21 @@ export const initGA = (): void => {
     return;
   }
   
+  // Helper function to initialize gtag
+  const setupGtag = () => {
+    window.dataLayer = window.dataLayer || [];
+    const gtag = (...args: any[]) => {
+      window.dataLayer.push(args);
+    };
+    window.gtag = gtag;
+    
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, {
+      send_page_view: true,
+      anonymize_ip: true,
+    });
+  };
+  
   // Wait a bit to see if GTM loads GA4
   setTimeout(() => {
     // If gtag doesn't exist after GTM should have loaded, initialize directly
@@ -91,17 +106,7 @@ export const initGA = (): void => {
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
       document.head.appendChild(script);
 
-      window.dataLayer = window.dataLayer || [];
-      function gtag(...args: any[]) {
-        window.dataLayer.push(args);
-      }
-      window.gtag = gtag;
-      
-      gtag('js', new Date());
-      gtag('config', GA_MEASUREMENT_ID, {
-        send_page_view: true,
-        anonymize_ip: true,
-      });
+      setupGtag();
 
       log('✅ GA4 initialized directly:', GA_MEASUREMENT_ID);
     } else {
@@ -170,33 +175,34 @@ export const initRedditPixel = (): void => {
     return;
   }
 
-  (function(w: any, d: Document) {
-    if (!w.rdt) {
-      const p: any = (w.rdt = function(...args: any[]) {
-        if (p.sendEvent) {
-          p.sendEvent.apply(p, args);
-        } else {
-          p.callQueue.push(args);
-        }
-      });
-      p.callQueue = [];
-      p.sendEvent = null;
-      const t = d.createElement('script');
-      t.src = 'https://www.redditstatic.com/ads/pixel.js';
-      t.async = true;
-      const s = d.getElementsByTagName('script')[0];
-      if (s && s.parentNode) {
-        s.parentNode.insertBefore(t, s);
+  const w: any = window;
+  const d: Document = document;
+  
+  if (!w.rdt) {
+    const p: any = (w.rdt = (...args: any[]) => {
+      if (p.sendEvent) {
+        p.sendEvent.apply(p, args);
+      } else {
+        p.callQueue.push(args);
       }
+    });
+    p.callQueue = [];
+    p.sendEvent = null;
+    const t = d.createElement('script');
+    t.src = 'https://www.redditstatic.com/ads/pixel.js';
+    t.async = true;
+    const s = d.getElementsByTagName('script')[0];
+    if (s && s.parentNode) {
+      s.parentNode.insertBefore(t, s);
     }
-  })(window, document);
+  }
 
-  window.rdt('init', REDDIT_PIXEL_ID, {
+  w.rdt('init', REDDIT_PIXEL_ID, {
     optOut: false,
     useDecimalCurrencyValues: true,
   });
 
-  window.rdt('track', 'PageVisit');
+  w.rdt('track', 'PageVisit');
   
   log('✅ Reddit Pixel initialized:', REDDIT_PIXEL_ID);
 };
