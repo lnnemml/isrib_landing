@@ -1,5 +1,5 @@
 // lib/analytics.ts
-// Google Analytics 4 + Reddit Pixel + GTM Integration
+// FIXED VERSION - Google Analytics 4 + Reddit Pixel + GTM Integration
 
 // Types
 export interface GAEvent {
@@ -28,88 +28,125 @@ declare global {
 }
 
 // ============================================
-// GOOGLE TAG MANAGER (GTM)
-// ============================================
-
-// Push events to GTM dataLayer
-export const pushToDataLayer = (event: any): void => {
-  if (typeof window === 'undefined' || !window.dataLayer) return;
-  
-  window.dataLayer.push(event);
-  console.log('📊 GTM Event:', event);
-};
-
-// ============================================
-// GOOGLE ANALYTICS 4 (can work through GTM or direct)
+// CONFIGURATION
 // ============================================
 
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+export const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID || '';
+export const GTM_ID = 'GTM-M2QCB45Q'; // Your GTM container
 
-// Initialize GA4 (only if not using GTM for GA4)
-export const initGA = (): void => {
-  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) return;
+// Debug mode - set to false in production
+const DEBUG = process.env.NODE_ENV === 'development';
+
+const log = (...args: any[]) => {
+  if (DEBUG) console.log(...args);
+};
+
+// ============================================
+// GOOGLE TAG MANAGER (GTM) - PRIMARY METHOD
+// ============================================
+
+// Initialize dataLayer before GTM loads
+export const initDataLayer = (): void => {
+  if (typeof window === 'undefined') return;
   
-  // Check if GTM is already handling GA4
-  if (window.dataLayer) {
-    console.log('✅ GA4 will be handled by GTM');
+  window.dataLayer = window.dataLayer || [];
+  log('✅ DataLayer initialized');
+};
+
+// Push events to GTM dataLayer
+export const pushToDataLayer = (event: any): void => {
+  if (typeof window === 'undefined') return;
+  
+  if (!window.dataLayer) {
+    window.dataLayer = [];
+  }
+  
+  window.dataLayer.push(event);
+  log('📊 GTM Event pushed:', event);
+};
+
+// ============================================
+// GOOGLE ANALYTICS 4 (via GTM is preferred)
+// ============================================
+
+// Initialize GA4 ONLY if GTM doesn't have it configured
+export const initGA = (): void => {
+  if (typeof window === 'undefined') return;
+  
+  // Check if GA_MEASUREMENT_ID is configured
+  if (!GA_MEASUREMENT_ID) {
+    console.warn('⚠️ GA_MEASUREMENT_ID not configured');
     return;
   }
   
-  // Otherwise, load GA4 directly
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script1);
+  // Wait a bit to see if GTM loads GA4
+  setTimeout(() => {
+    // If gtag doesn't exist after GTM should have loaded, initialize directly
+    if (!window.gtag) {
+      log('📊 Initializing GA4 directly (GTM not handling it)');
+      
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+      document.head.appendChild(script);
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag(...args: any[]) {
-    window.dataLayer.push(args);
-  }
-  window.gtag = gtag;
-  
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID, {
-    send_page_view: true,
-    anonymize_ip: true,
-  });
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args: any[]) {
+        window.dataLayer.push(args);
+      }
+      window.gtag = gtag;
+      
+      gtag('js', new Date());
+      gtag('config', GA_MEASUREMENT_ID, {
+        send_page_view: true,
+        anonymize_ip: true,
+      });
 
-  console.log('✅ GA4 initialized directly:', GA_MEASUREMENT_ID);
+      log('✅ GA4 initialized directly:', GA_MEASUREMENT_ID);
+    } else {
+      log('✅ GA4 loaded by GTM');
+    }
+  }, 1000);
 };
 
 // Track pageview (works with both GTM and direct GA4)
 export const trackPageview = (url: string): void => {
-  // If GTM exists, push to dataLayer
-  if (typeof window !== 'undefined' && window.dataLayer) {
-    pushToDataLayer({
-      event: 'page_view',
-      page_path: url,
-      page_title: document.title,
-      page_location: window.location.href,
-    });
-  }
+  if (typeof window === 'undefined') return;
+
+  // Always push to dataLayer (for GTM)
+  pushToDataLayer({
+    event: 'page_view',
+    page_path: url,
+    page_title: document.title,
+    page_location: window.location.href,
+  });
   
-  // Also push to gtag if it exists (for direct GA4)
-  if (typeof window !== 'undefined' && window.gtag) {
+  // Also send directly if gtag exists
+  if (window.gtag && GA_MEASUREMENT_ID) {
     window.gtag('config', GA_MEASUREMENT_ID, {
       page_path: url,
     });
+    log('📄 Pageview tracked:', url);
   }
 };
 
-// Track GA4 event (works with both GTM and direct GA4)
+// Track GA4 event
 export const trackGAEvent = ({ action, category, label, value }: GAEvent): void => {
-  // If GTM exists, push to dataLayer
-  if (typeof window !== 'undefined' && window.dataLayer) {
-    pushToDataLayer({
-      event: action,
-      event_category: category,
-      event_label: label,
-      value: value,
-    });
-  }
+  if (typeof window === 'undefined') return;
+
+  const eventData = {
+    event: action,
+    event_category: category,
+    event_label: label,
+    value: value,
+  };
+
+  // Push to dataLayer (for GTM)
+  pushToDataLayer(eventData);
   
-  // Also push to gtag if it exists (for direct GA4)
-  if (typeof window !== 'undefined' && window.gtag) {
+  // Also send directly if gtag exists
+  if (window.gtag) {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
@@ -117,18 +154,21 @@ export const trackGAEvent = ({ action, category, label, value }: GAEvent): void 
     });
   }
   
-  console.log('📊 GA Event:', { action, category, label, value });
+  log('📊 GA Event:', eventData);
 };
 
 // ============================================
 // REDDIT PIXEL
 // ============================================
 
-export const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID || '';
-
 // Initialize Reddit Pixel
 export const initRedditPixel = (): void => {
-  if (typeof window === 'undefined' || !REDDIT_PIXEL_ID) return;
+  if (typeof window === 'undefined') return;
+  
+  if (!REDDIT_PIXEL_ID) {
+    console.warn('⚠️ REDDIT_PIXEL_ID not configured');
+    return;
+  }
 
   (function(w: any, d: Document) {
     if (!w.rdt) {
@@ -158,7 +198,7 @@ export const initRedditPixel = (): void => {
 
   window.rdt('track', 'PageVisit');
   
-  console.log('✅ Reddit Pixel initialized:', REDDIT_PIXEL_ID);
+  log('✅ Reddit Pixel initialized:', REDDIT_PIXEL_ID);
 };
 
 // Track Reddit event
@@ -179,22 +219,23 @@ export const trackRedditEvent = ({ event, customEventName, value, currency = 'US
     window.rdt('track', event, eventData);
   }
 
-  console.log('🔴 Reddit Event:', event, eventData);
+  log('🔴 Reddit Event:', event, eventData);
 };
 
 // ============================================
-// COMBINED TRACKING (GTM + GA4 + Reddit)
+// COMBINED TRACKING
 // ============================================
 
 // Track page view on all platforms
 export const trackPage = (url: string): void => {
   trackPageview(url);
-  trackRedditEvent({ event: 'PageVisit' });
+  if (window.rdt) {
+    trackRedditEvent({ event: 'PageVisit' });
+  }
 };
 
 // Track email capture
 export const trackEmailCapture = (source: string): void => {
-  // GTM
   pushToDataLayer({
     event: 'email_capture',
     event_category: 'engagement',
@@ -202,7 +243,6 @@ export const trackEmailCapture = (source: string): void => {
     value: 1,
   });
 
-  // GA4 (direct or via GTM)
   trackGAEvent({
     action: 'email_capture',
     category: 'engagement',
@@ -210,42 +250,41 @@ export const trackEmailCapture = (source: string): void => {
     value: 1,
   });
 
-  // Reddit
-  trackRedditEvent({
-    event: 'Lead',
-    leadType: 'email',
-    source: source,
-  });
+  if (window.rdt) {
+    trackRedditEvent({
+      event: 'Lead',
+      leadType: 'email',
+      source: source,
+    });
+  }
 };
 
 // Track button click
 export const trackButtonClick = (buttonName: string, location: string): void => {
-  // GTM
   pushToDataLayer({
     event: 'button_click',
     button_name: buttonName,
     button_location: location,
   });
 
-  // GA4
   trackGAEvent({
     action: 'button_click',
     category: 'engagement',
     label: `${buttonName}_${location}`,
   });
 
-  // Reddit
-  trackRedditEvent({
-    event: 'ViewContent',
-    contentType: 'button_click',
-    contentName: buttonName,
-    location: location,
-  });
+  if (window.rdt) {
+    trackRedditEvent({
+      event: 'ViewContent',
+      contentType: 'button_click',
+      contentName: buttonName,
+      location: location,
+    });
+  }
 };
 
 // Track product view
 export const trackProductView = (productName: string, productPrice: number): void => {
-  // GTM
   pushToDataLayer({
     event: 'view_item',
     ecommerce: {
@@ -257,7 +296,6 @@ export const trackProductView = (productName: string, productPrice: number): voi
     }
   });
 
-  // GA4
   trackGAEvent({
     action: 'view_item',
     category: 'ecommerce',
@@ -265,19 +303,19 @@ export const trackProductView = (productName: string, productPrice: number): voi
     value: productPrice,
   });
 
-  // Reddit
-  trackRedditEvent({
-    event: 'ViewContent',
-    contentType: 'product',
-    contentName: productName,
-    value: productPrice,
-    currency: 'USD',
-  });
+  if (window.rdt) {
+    trackRedditEvent({
+      event: 'ViewContent',
+      contentType: 'product',
+      contentName: productName,
+      value: productPrice,
+      currency: 'USD',
+    });
+  }
 };
 
 // Track add to cart
 export const trackAddToCart = (productName: string, productPrice: number, quantity: number): void => {
-  // GTM
   pushToDataLayer({
     event: 'add_to_cart',
     ecommerce: {
@@ -290,7 +328,6 @@ export const trackAddToCart = (productName: string, productPrice: number, quanti
     }
   });
 
-  // GA4
   trackGAEvent({
     action: 'add_to_cart',
     category: 'ecommerce',
@@ -298,19 +335,19 @@ export const trackAddToCart = (productName: string, productPrice: number, quanti
     value: productPrice * quantity,
   });
 
-  // Reddit
-  trackRedditEvent({
-    event: 'AddToCart',
-    productName: productName,
-    value: productPrice,
-    currency: 'USD',
-    itemCount: quantity,
-  });
+  if (window.rdt) {
+    trackRedditEvent({
+      event: 'AddToCart',
+      productName: productName,
+      value: productPrice,
+      currency: 'USD',
+      itemCount: quantity,
+    });
+  }
 };
 
 // Track purchase
 export const trackPurchase = (orderId: string, value: number, productName: string, quantity: number): void => {
-  // GTM
   pushToDataLayer({
     event: 'purchase',
     ecommerce: {
@@ -325,8 +362,7 @@ export const trackPurchase = (orderId: string, value: number, productName: strin
     }
   });
 
-  // GA4 (direct)
-  if (typeof window !== 'undefined' && window.gtag) {
+  if (window.gtag && GA_MEASUREMENT_ID) {
     window.gtag('event', 'purchase', {
       transaction_id: orderId,
       value: value,
@@ -340,15 +376,16 @@ export const trackPurchase = (orderId: string, value: number, productName: strin
     });
   }
 
-  // Reddit
-  trackRedditEvent({
-    event: 'Purchase',
-    transactionId: orderId,
-    value: value,
-    currency: 'USD',
-    itemCount: quantity,
-    productName: productName,
-  });
+  if (window.rdt) {
+    trackRedditEvent({
+      event: 'Purchase',
+      transactionId: orderId,
+      value: value,
+      currency: 'USD',
+      itemCount: quantity,
+      productName: productName,
+    });
+  }
 
-  console.log('💰 Purchase tracked:', { orderId, value, productName, quantity });
+  log('💰 Purchase tracked:', { orderId, value, productName, quantity });
 };
