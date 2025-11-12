@@ -224,6 +224,100 @@ export const trackButtonClick = (buttonName: string, location: string): void => 
 };
 
 // ============================================
+// SCROLL DEPTH TRACKING
+// ============================================
+
+let scrollDepthTracked = {
+  '25': false,
+  '50': false,
+  '75': false,
+  '90': false,
+  '100': false
+};
+
+// Track scroll depth percentage
+export const trackScrollDepth = (percentage: number): void => {
+  const percentStr = percentage.toString() as keyof typeof scrollDepthTracked;
+  
+  // Only track each milestone once per page
+  if (scrollDepthTracked[percentStr]) {
+    return;
+  }
+  
+  scrollDepthTracked[percentStr] = true;
+  
+  // GTM Event
+  pushToDataLayer({
+    event: 'scroll_depth',
+    scroll_percentage: percentage,
+    page_type: window.location.pathname.includes('/research') ? 'prelanding' : 'landing',
+  });
+  
+  log('Scroll depth:', percentage + '%');
+};
+
+// Initialize scroll tracking
+export const initScrollTracking = (): void => {
+  if (typeof window === 'undefined') return;
+  
+  let ticking = false;
+  
+  const checkScrollDepth = () => {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    
+    const scrollPercentage = Math.round(
+      ((scrollTop + windowHeight) / documentHeight) * 100
+    );
+    
+    // Track milestones
+    if (scrollPercentage >= 25 && !scrollDepthTracked['25']) {
+      trackScrollDepth(25);
+    }
+    if (scrollPercentage >= 50 && !scrollDepthTracked['50']) {
+      trackScrollDepth(50);
+    }
+    if (scrollPercentage >= 75 && !scrollDepthTracked['75']) {
+      trackScrollDepth(75);
+    }
+    if (scrollPercentage >= 90 && !scrollDepthTracked['90']) {
+      trackScrollDepth(90);
+    }
+    if (scrollPercentage >= 99 && !scrollDepthTracked['100']) {
+      trackScrollDepth(100);
+    }
+    
+    ticking = false;
+  };
+  
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(checkScrollDepth);
+      ticking = true;
+    }
+  };
+  
+  window.addEventListener('scroll', onScroll, { passive: true });
+  
+  // Reset tracking when page changes
+  const resetScrollTracking = () => {
+    scrollDepthTracked = {
+      '25': false,
+      '50': false,
+      '75': false,
+      '90': false,
+      '100': false
+    };
+  };
+  
+  // Listen for page changes (for SPA navigation)
+  window.addEventListener('popstate', resetScrollTracking);
+  
+  log('✅ Scroll tracking initialized');
+};
+
+// ============================================
 // PURCHASE TRACKING (if you add checkout on your site later)
 // ============================================
 
