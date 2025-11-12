@@ -23,7 +23,7 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
     
     try {
       // Send to n8n webhook
-      const response = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
+      const response = await fetch('https://isrib.app.n8n.cloud/webhook/isrib-signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default function EmailCapture({ isOpen, onClose }: EmailCaptureProps) {
       // Auto-retry once after 1 second
       setTimeout(async () => {
         try {
-          const retryResponse = await fetch('https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8', {
+          const retryResponse = await fetch('https://isrib.app.n8n.cloud/webhook/isrib-signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
