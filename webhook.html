@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Webhook Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-box {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #0f3460;
+            border: 1px solid #00d9ff;
+            color: white;
+            border-radius: 4px;
+        }
+        button {
+            background: #00d9ff;
+            color: #1a1a2e;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+        button:hover {
+            background: #00b8d4;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success {
+            background: #1b5e20;
+            border: 1px solid #4caf50;
+        }
+        .error {
+            background: #b71c1c;
+            border: 1px solid #f44336;
+        }
+        .info {
+            background: #01579b;
+            border: 1px solid #03a9f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 n8n Webhook Тест</h1>
+    
+    <div class="test-box">
+        <h2>Test 1: Простий POST запит</h2>
+        <input type="email" id="email1" placeholder="Введіть email" value="test@example.com">
+        <button onclick="testSimplePost()">Відправити простий POST</button>
+        <div id="result1"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 2: POST з повними даними</h2>
+        <input type="email" id="email2" placeholder="Введіть email" value="test@example.com">
+        <button onclick="testFullPost()">Відправити з усіма параметрами</button>
+        <div id="result2"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 3: GET запит (для перевірки)</h2>
+        <button onclick="testGet()">Спробувати GET</button>
+        <div id="result3"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 4: OPTIONS (CORS перевірка)</h2>
+        <button onclick="testOptions()">Перевірити CORS</button>
+        <div id="result4"></div>
+    </div>
+
+    <script>
+        const webhookUrl = 'https://isrib.app.n8n.cloud/workflow/RlPUy2gigY0DJWG8';
+
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = message;
+            element.className = `result ${type}`;
+        }
+
+        async function testSimplePost() {
+            const email = document.getElementById('email1').value;
+            showResult('result1', 'Відправка...', 'info');
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const responseText = await response.text();
+                
+                if (response.ok) {
+                    showResult('result1', 
+                        `✅ SUCCESS!\n\nStatus: ${response.status}\nResponse: ${responseText}`, 
+                        'success'
+                    );
+                } else {
+                    showResult('result1', 
+                        `❌ ERROR\n\nStatus: ${response.status}\nResponse: ${responseText}`, 
+                        'error'
+                    );
+                }
+            } catch (error) {
+                showResult('result1', 
+                    `❌ FETCH ERROR\n\n${error.message}\n\nМожлива причина:\n- CORS блокування\n- Webhook недоступний\n- Мережева помилка`, 
+                    'error'
+                );
+            }
+        }
+
+        async function testFullPost() {
+            const email = document.getElementById('email2').value;
+            showResult('result2', 'Відправка...', 'info');
+            
+            try {
+                const payload = {
+                    email: email.trim().toLowerCase(),
+                    source: 'webhook_test',
+                    timestamp: new Date().toISOString(),
+                    utm_source: 'test',
+                    utm_medium: 'debug',
+                    utm_campaign: 'webhook_testing',
+                    page_url: window.location.href,
+                    test_mode: true
+                };
+
+                console.log('Sending payload:', payload);
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const responseText = await response.text();
+                
+                showResult('result2', 
+                    `Status: ${response.status}\n\nRequest:\n${JSON.stringify(payload, null, 2)}\n\nResponse:\n${responseText}`, 
+                    response.ok ? 'success' : 'error'
+                );
+            } catch (error) {
+                showResult('result2', 
+                    `❌ ERROR: ${error.message}`, 
+                    'error'
+                );
+            }
+        }
+
+        async function testGet() {
+            showResult('result3', 'Відправка GET...', 'info');
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'GET'
+                });
+
+                const responseText = await response.text();
+                
+                showResult('result3', 
+                    `Status: ${response.status}\n\nResponse:\n${responseText}\n\n${response.ok ? '✅ GET працює' : 'ℹ️ GET може не підтримуватись'}`, 
+                    response.ok ? 'success' : 'info'
+                );
+            } catch (error) {
+                showResult('result3', 
+                    `❌ ERROR: ${error.message}`, 
+                    'error'
+                );
+            }
+        }
+
+        async function testOptions() {
+            showResult('result4', 'Перевірка CORS...', 'info');
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                });
+
+                showResult('result4', 
+                    `Status: ${response.status}\n\nCORS Headers:\n${JSON.stringify(headers, null, 2)}`, 
+                    response.ok ? 'success' : 'error'
+                );
+            } catch (error) {
+                showResult('result4', 
+                    `❌ CORS ERROR: ${error.message}\n\nCORS може бути заблокований на рівні n8n`, 
+                    'error'
+                );
+            }
+        }
+
+        // Auto-run simple test on load
+        window.addEventListener('load', () => {
+            console.log('Webhook URL:', webhookUrl);
+            console.log('Ready to test!');
+        });
+    </script>
+</body>
+</html>
