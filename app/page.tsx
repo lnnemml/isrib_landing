@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { trackLandingViewFromPrelanding } from '@/lib/analytics';
 import EmailCapture from '@/components/EmailCapture';
 import EmailCaptureInline from '@/components/EmailCaptureInline';
 import Hero from '@/components/Hero';
@@ -13,8 +15,21 @@ import Experience from '@/components/Experience';
 import CTASection from '@/components/CTASection';
 import FAQ from '@/components/FAQ';
 
-export default function Home() {
+function HomeContent() {
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Track if user came from prelanding
+  useEffect(() => {
+    // Check if URL contains utm_campaign=prelander or referrer is /research
+    const isFromPrelanding = 
+      searchParams?.get('utm_campaign') === 'prelander' ||
+      document.referrer.includes('/research');
+    
+    if (isFromPrelanding) {
+      trackLandingViewFromPrelanding();
+    }
+  }, [searchParams]);
 
   return (
     <main className="min-h-screen">
@@ -34,5 +49,13 @@ export default function Home() {
         onClose={() => setShowEmailModal(false)} 
       />
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
