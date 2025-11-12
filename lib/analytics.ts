@@ -1,19 +1,10 @@
 // lib/analytics.ts
-// GTM-ONLY VERSION - Cleaner, No Duplication
-
-// Types
-export interface GAEvent {
-  action: string;
-  category: string;
-  label?: string;
-  value?: number;
-}
+// MINIMAL GTM - Only essential events for traffic analysis
 
 // Type declarations
 declare global {
   interface Window {
     dataLayer: any[];
-    rdt: any;
   }
 }
 
@@ -22,17 +13,16 @@ declare global {
 // ============================================
 
 export const GTM_ID = 'GTM-M2QCB45Q';
-export const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID || '';
 
 // Debug mode
 const DEBUG = process.env.NODE_ENV === 'development';
 
 const log = (...args: any[]) => {
-  if (DEBUG) console.log(...args);
+  if (DEBUG) console.log('📊 GTM:', ...args);
 };
 
 // ============================================
-// GOOGLE TAG MANAGER - PRIMARY METHOD
+// CORE FUNCTIONS
 // ============================================
 
 // Initialize dataLayer before GTM loads
@@ -52,145 +42,63 @@ export const pushToDataLayer = (event: any): void => {
   }
   
   window.dataLayer.push(event);
-  log('📊 GTM Event pushed:', event);
-};
-
-// ============================================
-// REDDIT PIXEL (Optional - can also be managed via GTM)
-// ============================================
-
-// Initialize Reddit Pixel
-export const initRedditPixel = (): void => {
-  if (typeof window === 'undefined') return;
-  
-  if (!REDDIT_PIXEL_ID) {
-    console.warn('⚠️ REDDIT_PIXEL_ID not configured');
-    return;
-  }
-
-  const w: any = window;
-  const d: Document = document;
-  
-  if (!w.rdt) {
-    const p: any = (w.rdt = (...args: any[]) => {
-      if (p.sendEvent) {
-        p.sendEvent.apply(p, args);
-      } else {
-        p.callQueue.push(args);
-      }
-    });
-    p.callQueue = [];
-    p.sendEvent = null;
-    const t = d.createElement('script');
-    t.src = 'https://www.redditstatic.com/ads/pixel.js';
-    t.async = true;
-    const s = d.getElementsByTagName('script')[0];
-    if (s && s.parentNode) {
-      s.parentNode.insertBefore(t, s);
-    }
-  }
-
-  w.rdt('init', REDDIT_PIXEL_ID, {
-    optOut: false,
-    useDecimalCurrencyValues: true,
-  });
-
-  w.rdt('track', 'PageVisit');
-  
-  log('✅ Reddit Pixel initialized:', REDDIT_PIXEL_ID);
+  log('Event pushed:', event);
 };
 
 // ============================================
 // TRACKING FUNCTIONS
 // ============================================
 
-// Track page view
-export const trackPage = (url: string): void => {
-  if (typeof window === 'undefined') return;
-
+// 1. Track prelanding view
+export const trackPrelandingView = (): void => {
   pushToDataLayer({
-    event: 'page_view',
-    page_path: url,
-    page_title: document.title,
-    page_location: window.location.href,
+    event: 'prelanding_view',
+    page_type: 'prelanding',
   });
   
-  log('📄 Page view tracked:', url);
+  log('Prelanding view');
 };
 
-// Track email capture
+// 2. Track prelanding CTA click
+export const trackPrelandingCTA = (location: string): void => {
+  pushToDataLayer({
+    event: 'prelanding_cta_click',
+    cta_location: location,
+  });
+  
+  log('Prelanding CTA click:', location);
+};
+
+// 3. Track landing view from prelanding
+export const trackLandingViewFromPrelanding = (): void => {
+  pushToDataLayer({
+    event: 'landing_view_from_prelanding',
+    page_type: 'landing',
+    source: 'prelanding',
+  });
+  
+  log('Landing view from prelanding');
+};
+
+// 4. Track email capture
 export const trackEmailCapture = (source: string): void => {
   pushToDataLayer({
     event: 'email_capture',
-    event_category: 'engagement',
-    event_label: source,
-    value: 1,
+    capture_source: source,
   });
   
-  log('📧 Email capture tracked:', source);
+  log('Email capture:', source);
 };
 
-// Track button click
-export const trackButtonClick = (buttonName: string, location: string): void => {
+// 5. Track buy button click
+export const trackBuyClick = (product: '500mg' | '1g', price: number, location: string): void => {
   pushToDataLayer({
-    event: 'button_click',
-    button_name: buttonName,
+    event: 'buy_click',
+    product_sku: product,
+    product_price: price,
     button_location: location,
-    event_category: 'engagement',
-    event_label: `${buttonName}_${location}`,
+    destination_url: `https://isrib.shop/buy-${product}.html`,
   });
   
-  log('🔘 Button click tracked:', buttonName, location);
-};
-
-// Track product view
-export const trackProductView = (productName: string, productPrice: number): void => {
-  pushToDataLayer({
-    event: 'view_item',
-    ecommerce: {
-      items: [{
-        item_name: productName,
-        price: productPrice,
-        currency: 'USD',
-      }]
-    }
-  });
-  
-  log('👁️ Product view tracked:', productName, productPrice);
-};
-
-// Track add to cart
-export const trackAddToCart = (productName: string, productPrice: number, quantity: number): void => {
-  pushToDataLayer({
-    event: 'add_to_cart',
-    ecommerce: {
-      items: [{
-        item_name: productName,
-        price: productPrice,
-        quantity: quantity,
-        currency: 'USD',
-      }]
-    }
-  });
-  
-  log('🛒 Add to cart tracked:', productName, quantity);
-};
-
-// Track purchase
-export const trackPurchase = (orderId: string, value: number, productName: string, quantity: number): void => {
-  pushToDataLayer({
-    event: 'purchase',
-    ecommerce: {
-      transaction_id: orderId,
-      value: value,
-      currency: 'USD',
-      items: [{
-        item_name: productName,
-        price: value / quantity,
-        quantity: quantity,
-      }]
-    }
-  });
-  
-  log('💰 Purchase tracked:', { orderId, value, productName, quantity });
+  log('Buy click:', { product, price, location });
 };
