@@ -24,20 +24,6 @@ export default function Hero({ onOpenEmail }: HeroProps) {
       // This is a buy button, track it properly
       trackBuyClick('1g', 200, 'hero');
       
-      // Get linker parameter from gtag for cross-domain tracking
-      let linkerParam = '';
-      
-      // Try to get linker param from gtag (if available)
-      if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
-        try {
-          window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
-            linkerParam = lp;
-          });
-        } catch (e) {
-          console.warn('[Analytics] Failed to get linker param:', e);
-        }
-      }
-      
       // Get UTM parameters
       const urlParams = new URLSearchParams(window.location.search);
       const utmSource = urlParams.get('utm_source') || 'direct';
@@ -54,20 +40,33 @@ export default function Hero({ onOpenEmail }: HeroProps) {
       if (utmMedium) checkoutUrl.searchParams.set('utm_medium', utmMedium);
       if (utmContent) checkoutUrl.searchParams.set('utm_content', utmContent);
       
-      // Add linker parameter if available
-      if (linkerParam) {
-        checkoutUrl.searchParams.set('_gl', linkerParam);
+      // Get linker parameter from gtag (ASYNC with timeout)
+      if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
+        let resolved = false;
+        
+        // Try to get linker param with timeout
+        window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
+          if (!resolved && lp) {
+            resolved = true;
+            checkoutUrl.searchParams.set('_gl', lp);
+            console.log('[Analytics] Got linker param:', lp);
+            window.location.href = checkoutUrl.toString();
+          }
+        });
+        
+        // Fallback: redirect after 300ms even without linker
+        setTimeout(() => {
+          if (!resolved) {
+            resolved = true;
+            console.warn('[Analytics] Linker param timeout, redirecting without it');
+            window.location.href = checkoutUrl.toString();
+          }
+        }, 300);
+      } else {
+        // No gtag available, redirect immediately
+        console.warn('[Analytics] gtag not available, redirecting without linker');
+        window.location.href = checkoutUrl.toString();
       }
-      
-      console.log('[Analytics] Hero CTA redirect:', {
-        product: '1g',
-        price: 200,
-        hasLinker: !!linkerParam,
-        utmSource,
-        utmCampaign
-      });
-      
-      window.location.href = checkoutUrl.toString();
     } else {
       trackButtonClick('Get the Full Story', 'hero');
       onOpenEmail();
