@@ -40,20 +40,6 @@ export default function CTASection() {
   const handleBuyClick = (product: '500mg' | '1g', price: number, location: string) => {
     trackBuyClick(product, price, location);
     
-    // Get linker parameter from gtag for cross-domain tracking
-    let linkerParam = '';
-    
-    // Try to get linker param from gtag (if available)
-    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
-      try {
-        window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
-          linkerParam = lp;
-        });
-      } catch (e) {
-        console.warn('[Analytics] Failed to get linker param:', e);
-      }
-    }
-    
     // Get UTM parameters from current URL
     const urlParams = new URLSearchParams(window.location.search);
     const utmSource = urlParams.get('utm_source') || 'direct';
@@ -70,21 +56,33 @@ export default function CTASection() {
     if (utmMedium) checkoutUrl.searchParams.set('utm_medium', utmMedium);
     if (utmContent) checkoutUrl.searchParams.set('utm_content', utmContent);
     
-    // Add linker parameter if available (for cross-domain tracking)
-    if (linkerParam) {
-      checkoutUrl.searchParams.set('_gl', linkerParam);
+    // Get linker parameter from gtag (ASYNC with timeout)
+    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
+      let resolved = false;
+      
+      // Try to get linker param with timeout
+      window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
+        if (!resolved && lp) {
+          resolved = true;
+          checkoutUrl.searchParams.set('_gl', lp);
+          console.log('[Analytics] Got linker param:', lp);
+          window.location.href = checkoutUrl.toString();
+        }
+      });
+      
+      // Fallback: redirect after 300ms even without linker
+      setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          console.warn('[Analytics] Linker param timeout, redirecting without it');
+          window.location.href = checkoutUrl.toString();
+        }
+      }, 300);
+    } else {
+      // No gtag available, redirect immediately
+      console.warn('[Analytics] gtag not available, redirecting without linker');
+      window.location.href = checkoutUrl.toString();
     }
-    
-    console.log('[Analytics] Redirecting to checkout:', {
-      product,
-      price,
-      hasLinker: !!linkerParam,
-      utmSource,
-      utmCampaign
-    });
-    
-    // Redirect to checkout
-    window.location.href = checkoutUrl.toString();
   };
 
   return (
