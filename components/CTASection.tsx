@@ -3,6 +3,18 @@
 import { trackProductView, trackBuyClick } from '@/lib/analytics';
 import { useEffect } from 'react';
 
+// Declare gtag as global
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'get' | 'event' | 'config' | 'js',
+      target: string,
+      paramsOrCallback?: string | ((value: string) => void) | Record<string, any>,
+      callback?: (value: string) => void
+    ) => void;
+  }
+}
+
 export default function CTASection() {
   // Track product view when section becomes visible
   useEffect(() => {
@@ -32,7 +44,7 @@ export default function CTASection() {
     let linkerParam = '';
     
     // Try to get linker param from gtag (if available)
-    if (typeof window.gtag !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
       try {
         window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
           linkerParam = lp;
