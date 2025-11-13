@@ -2,6 +2,18 @@
 
 import { trackButtonClick, trackBuyClick } from '@/lib/analytics';
 
+// Declare gtag as global
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'get' | 'event' | 'config' | 'js',
+      target: string,
+      paramsOrCallback?: string | ((value: string) => void) | Record<string, any>,
+      callback?: (value: string) => void
+    ) => void;
+  }
+}
+
 interface HeroProps {
   onOpenEmail: () => void;
 }
@@ -16,7 +28,7 @@ export default function Hero({ onOpenEmail }: HeroProps) {
       let linkerParam = '';
       
       // Try to get linker param from gtag (if available)
-      if (typeof window.gtag !== 'undefined') {
+      if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
         try {
           window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
             linkerParam = lp;
