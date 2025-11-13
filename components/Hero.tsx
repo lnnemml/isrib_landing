@@ -12,14 +12,17 @@ export default function Hero({ onOpenEmail }: HeroProps) {
       // This is a buy button, track it properly
       trackBuyClick('1g', 200, 'hero');
       
-      // Get GA client_id for cross-domain tracking
-      const gaCookie = document.cookie.split('; ').find(row => row.startsWith('_ga='));
-      let clientId = '';
+      // Get linker parameter from gtag for cross-domain tracking
+      let linkerParam = '';
       
-      if (gaCookie) {
-        const parts = gaCookie.split('=')[1].split('.');
-        if (parts.length >= 4) {
-          clientId = parts[2] + '.' + parts[3];
+      // Try to get linker param from gtag (if available)
+      if (typeof window.gtag !== 'undefined') {
+        try {
+          window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
+            linkerParam = lp;
+          });
+        } catch (e) {
+          console.warn('[Analytics] Failed to get linker param:', e);
         }
       }
       
@@ -27,14 +30,30 @@ export default function Hero({ onOpenEmail }: HeroProps) {
       const urlParams = new URLSearchParams(window.location.search);
       const utmSource = urlParams.get('utm_source') || 'direct';
       const utmCampaign = urlParams.get('utm_campaign') || 'none';
+      const utmMedium = urlParams.get('utm_medium') || '';
+      const utmContent = urlParams.get('utm_content') || '';
       
       // Redirect to checkout with attribution
       const checkoutUrl = new URL('https://isrib.shop/buy-1g.html');
-      checkoutUrl.searchParams.set('amount', '200');
       checkoutUrl.searchParams.set('product', '1g');
-      if (clientId) checkoutUrl.searchParams.set('cid', clientId);
+      checkoutUrl.searchParams.set('amount', '200');
       checkoutUrl.searchParams.set('utm_source', utmSource);
       checkoutUrl.searchParams.set('utm_campaign', utmCampaign);
+      if (utmMedium) checkoutUrl.searchParams.set('utm_medium', utmMedium);
+      if (utmContent) checkoutUrl.searchParams.set('utm_content', utmContent);
+      
+      // Add linker parameter if available
+      if (linkerParam) {
+        checkoutUrl.searchParams.set('_gl', linkerParam);
+      }
+      
+      console.log('[Analytics] Hero CTA redirect:', {
+        product: '1g',
+        price: 200,
+        hasLinker: !!linkerParam,
+        utmSource,
+        utmCampaign
+      });
       
       window.location.href = checkoutUrl.toString();
     } else {
