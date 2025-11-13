@@ -28,15 +28,17 @@ export default function CTASection() {
   const handleBuyClick = (product: '500mg' | '1g', price: number, location: string) => {
     trackBuyClick(product, price, location);
     
-    // Get GA client_id from cookie for cross-domain tracking
-    const gaCookie = document.cookie.split('; ').find(row => row.startsWith('_ga='));
-    let clientId = '';
+    // Get linker parameter from gtag for cross-domain tracking
+    let linkerParam = '';
     
-    if (gaCookie) {
-      // Extract client_id from _ga cookie (format: GA1.2.1234567890.9876543210)
-      const parts = gaCookie.split('=')[1].split('.');
-      if (parts.length >= 4) {
-        clientId = parts[2] + '.' + parts[3];
+    // Try to get linker param from gtag (if available)
+    if (typeof window.gtag !== 'undefined') {
+      try {
+        window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
+          linkerParam = lp;
+        });
+      } catch (e) {
+        console.warn('[Analytics] Failed to get linker param:', e);
       }
     }
     
@@ -44,15 +46,32 @@ export default function CTASection() {
     const urlParams = new URLSearchParams(window.location.search);
     const utmSource = urlParams.get('utm_source') || 'direct';
     const utmCampaign = urlParams.get('utm_campaign') || 'none';
+    const utmMedium = urlParams.get('utm_medium') || '';
+    const utmContent = urlParams.get('utm_content') || '';
     
-    // Build checkout URL with attribution data
+    // Build checkout URL with all attribution data
     const checkoutUrl = new URL(`https://isrib.shop/buy-${product}.html`);
-    checkoutUrl.searchParams.set('amount', price.toString());
     checkoutUrl.searchParams.set('product', product);
-    if (clientId) checkoutUrl.searchParams.set('cid', clientId);
+    checkoutUrl.searchParams.set('amount', price.toString());
     checkoutUrl.searchParams.set('utm_source', utmSource);
     checkoutUrl.searchParams.set('utm_campaign', utmCampaign);
+    if (utmMedium) checkoutUrl.searchParams.set('utm_medium', utmMedium);
+    if (utmContent) checkoutUrl.searchParams.set('utm_content', utmContent);
     
+    // Add linker parameter if available (for cross-domain tracking)
+    if (linkerParam) {
+      checkoutUrl.searchParams.set('_gl', linkerParam);
+    }
+    
+    console.log('[Analytics] Redirecting to checkout:', {
+      product,
+      price,
+      hasLinker: !!linkerParam,
+      utmSource,
+      utmCampaign
+    });
+    
+    // Redirect to checkout
     window.location.href = checkoutUrl.toString();
   };
 
