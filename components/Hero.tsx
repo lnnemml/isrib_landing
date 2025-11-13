@@ -11,8 +11,35 @@ export default function Hero({ onOpenEmail }: HeroProps) {
     if (type === 'primary') {
       // This is a buy button, track it properly
       trackBuyClick('1g', 200, 'hero');
+      
+      // Get GA client_id for cross-domain tracking
+      const gaCookie = document.cookie.split('; ').find(row => row.startsWith('_ga='));
+      let clientId = '';
+      
+      if (gaCookie) {
+        const parts = gaCookie.split('=')[1].split('.');
+        if (parts.length >= 4) {
+          clientId = parts[2] + '.' + parts[3];
+        }
+      }
+      
+      // Get UTM parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmSource = urlParams.get('utm_source') || 'direct';
+      const utmCampaign = urlParams.get('utm_campaign') || 'none';
+      
+      // Redirect to checkout with attribution
+      const checkoutUrl = new URL('https://isrib.shop/buy-1g.html');
+      checkoutUrl.searchParams.set('amount', '200');
+      checkoutUrl.searchParams.set('product', '1g');
+      if (clientId) checkoutUrl.searchParams.set('cid', clientId);
+      checkoutUrl.searchParams.set('utm_source', utmSource);
+      checkoutUrl.searchParams.set('utm_campaign', utmCampaign);
+      
+      window.location.href = checkoutUrl.toString();
     } else {
       trackButtonClick('Get the Full Story', 'hero');
+      onOpenEmail();
     }
   };
 
