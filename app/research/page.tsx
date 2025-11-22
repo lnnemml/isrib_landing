@@ -99,7 +99,7 @@ export default function PreLanding() {
           {/* Primary CTA - Multiple Options */}
           <div className="text-center space-y-3">
             <a 
-              href="/?utm_source=reddit&utm_campaign=prelander&utm_content=primary_cta"
+              href="/"
               onClick={() => handleCTAClick('hero_primary')}
               className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-8 md:px-12 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-base md:text-lg w-full md:w-auto"
               style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
@@ -109,7 +109,7 @@ export default function PreLanding() {
             
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <a 
-                href="/?utm_source=reddit&utm_campaign=prelander&utm_content=secondary_cta#mechanism"
+                href="/"
                 onClick={() => handleCTAClick('hero_secondary')}
                 className="text-accent hover:text-accent-dark font-semibold text-sm underline"
               >
@@ -117,7 +117,7 @@ export default function PreLanding() {
               </a>
               <span className="hidden sm:inline text-gray-500">•</span>
               <a 
-                href="/?utm_source=reddit&utm_campaign=prelander&utm_content=tertiary_cta#purity"
+                href="/"
                 onClick={() => handleCTAClick('hero_tertiary')}
                 className="text-accent hover:text-accent-dark font-semibold text-sm underline"
               >
@@ -223,7 +223,7 @@ export default function PreLanding() {
           
           <div className="text-center mb-8">
             <a 
-              href="/?utm_source=reddit&utm_campaign=prelander&utm_content=mechanism_cta"
+              href="/"
               onClick={() => handleCTAClick('mechanism_primary')}
               className="inline-block bg-accent hover:bg-accent-dark text-primary font-bold px-10 md:px-14 py-4 md:py-5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-accent/50 hover:scale-105 text-lg md:text-xl w-full md:w-auto"
               style={{boxShadow: '0 4px 14px 0 rgba(0, 217, 255, 0.39)'}}
