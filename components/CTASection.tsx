@@ -74,6 +74,7 @@ export default function CTASection() {
     price: number,
     location: string
   ) => {
+    // Track buy click FIRST (before redirect)
     trackBuyClick(product, price, location, selectedFormat);
     
     // Get UTM parameters from current URL
@@ -93,30 +94,32 @@ export default function CTASection() {
     if (utmMedium) checkoutUrl.searchParams.set('utm_medium', utmMedium);
     if (utmContent) checkoutUrl.searchParams.set('utm_content', utmContent);
     
-    // Get linker parameter from gtag (ASYNC with timeout)
+    // Try to get linker param (but don't wait for it)
+    let linkerParam: string | null = null;
+    
     if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
-      let resolved = false;
-      
-      window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
-        if (!resolved && lp) {
-          resolved = true;
-          checkoutUrl.searchParams.set('_gl', lp);
-          console.log('[Analytics] Got linker param:', lp);
-          window.location.href = checkoutUrl.toString();
-        }
-      });
-      
-      setTimeout(() => {
-        if (!resolved) {
-          resolved = true;
-          console.warn('[Analytics] Linker param timeout, redirecting without it');
-          window.location.href = checkoutUrl.toString();
-        }
-      }, 300);
-    } else {
-      console.warn('[Analytics] gtag not available, redirecting without linker');
-      window.location.href = checkoutUrl.toString();
+      try {
+        window.gtag('get', 'G-LJEBV5NPCT', 'linker_param', (lp: string) => {
+          if (lp) {
+            linkerParam = lp;
+            console.log('[Analytics] Got linker param:', lp);
+          }
+        });
+      } catch (error) {
+        console.warn('[Analytics] Error getting linker param:', error);
+      }
     }
+    
+    // Wait 150ms for linker param, then redirect anyway
+    setTimeout(() => {
+      if (linkerParam) {
+        checkoutUrl.searchParams.set('_gl', linkerParam);
+        console.log('[Analytics] Redirecting with linker param');
+      } else {
+        console.log('[Analytics] Redirecting without linker param');
+      }
+      window.location.href = checkoutUrl.toString();
+    }, 150);
   };
 
   return (
