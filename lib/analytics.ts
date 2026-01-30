@@ -149,6 +149,25 @@ export const trackLandingViewFromPrelanding = (): void => {
   log('Landing view from prelanding tracked');
 };
 
+// 3b. Track direct landing view (not from prelanding)
+export const trackLandingView = (): void => {
+  // GTM Event
+  pushToDataLayer({
+    event: 'landing_view',
+    page_type: 'landing',
+    source: 'direct',
+    funnel_step: 1,
+  });
+  
+  // Reddit Pixel
+  pushToReddit('ViewContent', {
+    page_type: 'landing',
+    source: 'direct'
+  });
+  
+  log('Direct landing view tracked');
+};
+
 // ============================================
 // CONVERSION TRACKING
 // ============================================
