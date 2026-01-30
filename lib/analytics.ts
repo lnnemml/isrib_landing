@@ -191,15 +191,17 @@ export const trackEmailCapture = (source: string): void => {
 
 // Track buy button click (before leaving to checkout)
 export const trackBuyClick = (
-  product: '500mg' | '1g', 
+  product: '500mg' | '1g' | '25-capsules' | '50-capsules', 
   price: number, 
-  location: string
+  location: string,
+  format: 'powder' | 'capsules' = 'powder'
 ): void => {
   // GTM Event
   pushToDataLayer({
     event: 'buy_click',
     product_sku: product,
     product_price: price,
+    product_format: format,
     button_location: location,
     destination_url: `https://isrib.shop/buy-${product}.html`,
     funnel_step: 5,
@@ -212,23 +214,44 @@ export const trackBuyClick = (
       id: `ISRIB-A15-${product}`,
       name: `ISRIB A15 ${product}`,
       category: 'Research Compounds',
+      format: format,
     }],
     value: price,
     currency: 'USD',
   });
   
-  log('Buy click tracked:', { product, price, location });
+  log('Buy click tracked:', { product, price, location, format });
 };
 
 // Track product view (when user sees pricing section)
-export const trackProductView = (productName: string, price: number): void => {
+export const trackProductView = (productName: string, price: number, format?: 'powder' | 'capsules'): void => {
   pushToDataLayer({
     event: 'product_view',
     product_name: productName,
     product_price: price,
+    product_format: format || 'powder',
   });
   
-  log('Product view:', productName);
+  log('Product view:', productName, format);
+};
+
+// Track product format switch (powder ⇄ capsules)
+export const trackFormatSwitch = (fromFormat: 'powder' | 'capsules', toFormat: 'powder' | 'capsules'): void => {
+  pushToDataLayer({
+    event: 'product_format_switch',
+    from_format: fromFormat,
+    to_format: toFormat,
+    timestamp: new Date().toISOString(),
+  });
+  
+  // Reddit Pixel - Custom event
+  pushToReddit('Custom', {
+    event_name: 'FormatSwitch',
+    from_format: fromFormat,
+    to_format: toFormat
+  });
+  
+  log('Format switch:', fromFormat, '→', toFormat);
 };
 
 // Track general button clicks
