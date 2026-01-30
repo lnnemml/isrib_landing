@@ -63,11 +63,3 @@ export default function Home() {
     </Suspense>
   );
 }
-
-export default function Home() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomeContent />
-    </Suspense>
-  );
-}
