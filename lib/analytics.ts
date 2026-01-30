@@ -246,14 +246,27 @@ export const trackScrollDepth = (percentage: number): void => {
   
   scrollDepthTracked[percentStr] = true;
   
-  // GTM Event
+  const isLandingPage = !window.location.pathname.includes('/research');
+  
+  // GTM Event - основний scroll_depth event
   pushToDataLayer({
     event: 'scroll_depth',
     scroll_percentage: percentage,
     page_type: window.location.pathname.includes('/research') ? 'prelanding' : 'landing',
   });
   
-  log('Scroll depth:', percentage + '%');
+  // Додатковий GTM Event - landing_scroll (тільки для landing page)
+  if (isLandingPage) {
+    pushToDataLayer({
+      event: 'landing_scroll',
+      scroll_percentage: percentage,
+      scroll_milestone: `${percentage}%`,
+      page_url: window.location.href,
+      timestamp: new Date().toISOString(),
+    });
+  }
+  
+  log('Scroll depth:', percentage + '%', isLandingPage ? '(landing_scroll event sent)' : '');
 };
 
 // Initialize scroll tracking
