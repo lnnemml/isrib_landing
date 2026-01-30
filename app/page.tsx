@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { trackLandingViewFromPrelanding } from '@/lib/analytics';
+import { trackLandingViewFromPrelanding, trackLandingView } from '@/lib/analytics';
 import EmailCapture from '@/components/EmailCapture';
 import EmailCaptureInline from '@/components/EmailCaptureInline';
 import Hero from '@/components/Hero';
@@ -19,15 +19,19 @@ function HomeContent() {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const searchParams = useSearchParams();
 
-  // Track if user came from prelanding
+  // Track landing view with source detection
   useEffect(() => {
-    // Check if URL contains utm_campaign=prelander or referrer is /research
+    // Перевіряємо чи користувач прийшов з prelanding
     const isFromPrelanding = 
       searchParams?.get('utm_campaign') === 'prelander' ||
       document.referrer.includes('/research');
     
     if (isFromPrelanding) {
+      // Якщо з prelanding - використовуємо старий event
       trackLandingViewFromPrelanding();
+    } else {
+      // Якщо прямий заход (з Reddit Ads, Google, Direct) - новий event
+      trackLandingView();
     }
   }, [searchParams]);
 
@@ -49,6 +53,14 @@ function HomeContent() {
         onClose={() => setShowEmailModal(false)} 
       />
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
 
