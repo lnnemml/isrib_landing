@@ -274,10 +274,11 @@ export default function CTASection() {
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold mb-2">Starter Pack</h3>
                 <div className="mb-2">
+                  <span className="text-2xl text-gray-500 line-through mr-3">$260</span>
                   <span className="text-4xl font-bold text-accent">$170</span>
                 </div>
-                <div className="inline-block bg-accent/20 border border-accent px-3 py-1 rounded-full mb-2">
-                  <span className="text-accent font-bold text-sm">CONVENIENT</span>
+                <div className="inline-block bg-red-500/20 border border-red-500 px-3 py-1 rounded-full mb-2">
+                  <span className="text-red-400 font-bold text-sm">35% OFF</span>
                 </div>
                 <p className="text-gray-400">25 capsules • 20mg each</p>
               </div>
@@ -324,10 +325,11 @@ export default function CTASection() {
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold mb-2">Full Protocol</h3>
                 <div className="mb-2">
+                  <span className="text-2xl text-gray-500 line-through mr-3">$360</span>
                   <span className="text-4xl font-bold text-accent">$240</span>
                 </div>
-                <div className="inline-block bg-accent/20 border border-accent px-3 py-1 rounded-full mb-2">
-                  <span className="text-accent font-bold text-sm">BEST VALUE</span>
+                <div className="inline-block bg-red-500/20 border border-red-500 px-3 py-1 rounded-full mb-2">
+                  <span className="text-red-400 font-bold text-sm">33% OFF</span>
                 </div>
                 <p className="text-gray-400">50 capsules • 20mg each</p>
               </div>
