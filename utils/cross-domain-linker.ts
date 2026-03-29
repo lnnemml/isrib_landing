@@ -2,24 +2,25 @@
 // Appends GA4 Client ID and Meta cookies to all checkout links
 // Use on isrib-research.com (Next.js landing page)
 
-/**
- * Get GA4 Client ID from gtag
- */
+// Type declarations
 declare global {
   interface Window {
     gtag?: (...args: any[]) => void;
   }
 }
 
+/**
+ * Get GA4 Client ID from gtag
+ */
 function getGA4ClientId(): Promise<string | null> {
   return new Promise((resolve) => {
-    if (typeof window === 'undefined' || typeof gtag === 'undefined') {
+    if (typeof window === 'undefined' || !window.gtag) {
       resolve(null);
       return;
     }
     
     // Try to get client_id from gtag
-    gtag('get', 'G-LJEBV5NPCT', 'client_id', (clientId: string) => {
+    window.gtag('get', 'G-LJEBV5NPCT', 'client_id', (clientId: string) => {
       if (clientId) {
         console.log('✅ GA4 Client ID:', clientId);
         resolve(clientId);
@@ -47,6 +48,7 @@ function getGA4ClientId(): Promise<string | null> {
  * Get cookie value by name
  */
 function getCookie(name: string): string | null {
+  if (typeof window === 'undefined') return null;
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) {
@@ -73,6 +75,8 @@ function getMetaFBC(): string | null {
  * Append tracking parameters to URL
  */
 export async function appendTrackingParams(url: string): Promise<string> {
+  if (typeof window === 'undefined') return url;
+  
   const urlObj = new URL(url, window.location.origin);
   
   // Get tracking IDs
@@ -171,26 +175,6 @@ export function initCrossDomainTracking() {
   });
   
   console.log('✅ Cross-domain tracking initialized');
-}
-
-/**
- * React Hook for cross-domain tracking
- * Usage in Next.js:
- * 
- * import { useCrossDomainTracking } from '@/utils/cross-domain-linker';
- * 
- * function MyComponent() {
- *   useCrossDomainTracking();
- *   return <div>...</div>;
- * }
- */
-export function useCrossDomainTracking() {
-  if (typeof window === 'undefined') return;
-  
-  // Run once on mount
-  React.useEffect(() => {
-    initCrossDomainTracking();
-  }, []);
 }
 
 // For non-React usage, export standalone function
