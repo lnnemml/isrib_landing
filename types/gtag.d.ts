@@ -1,12 +1,13 @@
 // types/gtag.d.ts
 declare global {
   interface Window {
-    gtag?: (
-      command: 'get' | 'event' | 'config' | 'js',
-      target: string,
-      paramsOrCallback?: string | ((value: string) => void) | Record<string, any>,
-      callback?: ((value: string) => void) => void
-    ) => void;
+    gtag?: {
+      (command: 'config', target: string, params?: Record<string, any>): void;
+      (command: 'event', action: string, params?: Record<string, any>): void;
+      (command: 'js', date: Date): void;
+      (command: 'get', target: string, field: string, callback: (value: string) => void): void;
+      (...args: any[]): void;
+    };
   }
 }
 
