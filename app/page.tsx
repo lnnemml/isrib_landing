@@ -14,6 +14,7 @@ import PurityGuarantee from '@/components/PurityGuarantee';
 import Experience from '@/components/Experience';
 import CTASection from '@/components/CTASection';
 import FAQ from '@/components/FAQ';
+import { initCrossDomainTracking } from '@/utils/cross-domain-linker';
 
 function HomeContent() {
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -34,6 +35,15 @@ function HomeContent() {
       trackLandingView();
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    // Додай невеликий delay щоб GTM/GA4 встигли завантажитись
+    const timer = setTimeout(() => {
+      initCrossDomainTracking();
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen">
