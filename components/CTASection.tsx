@@ -4,16 +4,7 @@ import { trackProductView, trackBuyClick, trackFormatSwitch } from '@/lib/analyt
 import { useEffect, useState } from 'react';
 
 // Declare gtag as global
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'get' | 'event' | 'config' | 'js',
-      target: string,
-      paramsOrCallback?: string | ((value: string) => void) | Record<string, any>,
-      callback?: (value: string) => void
-    ) => void;
-  }
-}
+
 
 type ProductFormat = 'powder' | 'capsules';
 
