@@ -2,17 +2,7 @@
 
 import { trackButtonClick, trackBuyClick } from '@/lib/analytics';
 
-// Declare gtag as global
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'get' | 'event' | 'config' | 'js',
-      target: string,
-      paramsOrCallback?: string | ((value: string) => void) | Record<string, any>,
-      callback?: (value: string) => void
-    ) => void;
-  }
-}
+
 
 interface HeroProps {
   onOpenEmail: () => void;
