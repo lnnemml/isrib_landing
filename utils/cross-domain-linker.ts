@@ -5,6 +5,12 @@
 /**
  * Get GA4 Client ID from gtag
  */
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 function getGA4ClientId(): Promise<string | null> {
   return new Promise((resolve) => {
     if (typeof window === 'undefined' || typeof gtag === 'undefined') {
