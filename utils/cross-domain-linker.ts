@@ -2,12 +2,6 @@
 // Appends GA4 Client ID and Meta cookies to all checkout links
 // Use on isrib-research.com (Next.js landing page)
 
-// Type declarations
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}
 
 /**
  * Get GA4 Client ID from gtag
