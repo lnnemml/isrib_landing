@@ -3,10 +3,13 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import rehypeSlug from 'rehype-slug'
 import { getArticle, getAllSlugs } from '@/lib/mdx'
 import { extractTOC } from '@/lib/toc'
+import { buildArticleSchema, buildFAQSchema, extractFAQsFromContent } from '@/lib/schema'
 import ArticleLayout from '@/components/layout/ArticleLayout'
 import DoseProtocol from '@/components/article/DoseProtocol'
 import ResearchCallout from '@/components/article/ResearchCallout'
 import UserQuote from '@/components/article/UserQuote'
+
+const BASE_URL = 'https://isrib-research.com'
 
 const mdxComponents = { DoseProtocol, ResearchCallout, UserQuote }
 
@@ -22,9 +25,26 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { frontmatter } = getArticle('science', params.slug)
+  const canonical = `${BASE_URL}/science/${params.slug}`
   return {
     title: frontmatter.title,
     description: frontmatter.description,
+    keywords: frontmatter.keywords,
+    alternates: { canonical },
+    openGraph: {
+      type: 'article',
+      url: canonical,
+      title: frontmatter.title,
+      description: frontmatter.description,
+      publishedTime: frontmatter.publishedAt,
+      modifiedTime: frontmatter.updatedAt ?? frontmatter.publishedAt,
+      authors: [`${BASE_URL}/author/`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: frontmatter.title,
+      description: frontmatter.description,
+    },
   }
 }
 
@@ -32,17 +52,42 @@ export default function SciencePage({ params }: PageProps) {
   const { frontmatter, content } = getArticle('science', params.slug)
   const toc = extractTOC(content)
 
+  const articleSchema = buildArticleSchema({
+    title: frontmatter.title,
+    description: frontmatter.description,
+    slug: frontmatter.slug,
+    cluster: frontmatter.cluster,
+    publishedAt: frontmatter.publishedAt,
+    updatedAt: frontmatter.updatedAt,
+    keywords: frontmatter.keywords,
+  })
+
+  const faqs = extractFAQsFromContent(content)
+  const faqSchema = buildFAQSchema(faqs)
+
   return (
-    <ArticleLayout frontmatter={frontmatter} toc={toc}>
-      <MDXRemote
-        source={content}
-        components={mdxComponents}
-        options={{
-          mdxOptions: {
-            rehypePlugins: [rehypeSlug],
-          },
-        }}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-    </ArticleLayout>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      <ArticleLayout frontmatter={frontmatter} toc={toc}>
+        <MDXRemote
+          source={content}
+          components={mdxComponents}
+          options={{
+            mdxOptions: {
+              rehypePlugins: [rehypeSlug],
+            },
+          }}
+        />
+      </ArticleLayout>
+    </>
   )
 }
