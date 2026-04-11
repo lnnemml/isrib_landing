@@ -5,6 +5,7 @@ import { getArticle, getAllSlugs } from '@/lib/mdx'
 import { extractTOC } from '@/lib/toc'
 import { buildArticleSchema, buildFAQSchema, extractFAQsFromContent } from '@/lib/schema'
 import ArticleLayout from '@/components/layout/ArticleLayout'
+import RelatedArticles from '@/components/article/RelatedArticles'
 import DoseProtocol from '@/components/article/DoseProtocol'
 import ResearchCallout from '@/components/article/ResearchCallout'
 import UserQuote from '@/components/article/UserQuote'
@@ -77,7 +78,13 @@ export default function BlogPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <ArticleLayout frontmatter={frontmatter} toc={toc}>
+      <ArticleLayout
+        frontmatter={frontmatter}
+        toc={toc}
+        relatedArticles={
+          <RelatedArticles slugs={frontmatter.relatedSlugs} currentCluster="blog" />
+        }
+      >
         <MDXRemote
           source={content}
           components={mdxComponents}

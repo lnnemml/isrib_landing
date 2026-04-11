@@ -191,6 +191,18 @@ html {
   border-top-width: 4px;
 }
 
+/* Article list cards hover */
+.article-card {
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease,
+              border-color 150ms ease;
+}
+.article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(13, 107, 107, 0.08);
+  border-color: var(--color-accent);
+}
+
 /* CTA button */
 .cta-button {
   position: relative;

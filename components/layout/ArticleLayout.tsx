@@ -10,6 +10,7 @@ type ArticleLayoutProps = {
   frontmatter: ArticleFrontmatter
   toc: TOCItem[]
   children: React.ReactNode
+  relatedArticles?: React.ReactNode
 }
 
 function formatDate(iso: string): string {
@@ -20,7 +21,7 @@ function formatDate(iso: string): string {
   })
 }
 
-export default function ArticleLayout({ frontmatter, toc, children }: ArticleLayoutProps) {
+export default function ArticleLayout({ frontmatter, toc, children, relatedArticles }: ArticleLayoutProps) {
   const clusterLabel = frontmatter.cluster.charAt(0).toUpperCase() + frontmatter.cluster.slice(1)
 
   return (
@@ -98,6 +99,7 @@ export default function ArticleLayout({ frontmatter, toc, children }: ArticleLay
 
           {/* End-of-article blocks */}
           <CTABlock />
+          {relatedArticles}
           <AuthorBio />
         </main>
       </div>
