@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap');
 
 :root {
   --color-bg:           #F7F5F0;
@@ -105,4 +104,23 @@ pre code {
 
 ::selection {
   background: var(--color-bg-accent);
+}
+
+.cta-link {
+  display: inline-block;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.cta-link:hover {
+  background: var(--color-accent-dark);
+  color: #ffffff;
+  text-decoration: none;
 }
