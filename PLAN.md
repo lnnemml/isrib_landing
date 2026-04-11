@@ -30,13 +30,15 @@
 | Inline link animated underline | ✅ Done |
 | Mobile TOC drawer (slide-up) | ✅ Done |
 | TOC active item smooth transition | ✅ Done |
-| Sitemap (app/sitemap.ts) | ⏳ Next |
-| robots.txt | ⏳ Next |
-| Schema markup (Article + FAQPage JSON-LD) | ⏳ Next |
+| Sitemap (app/sitemap.ts) | ✅ Done |
+| robots.txt | ✅ Done |
+| Schema markup (Article + FAQPage JSON-LD) | ✅ Done |
+| Cluster index pages (/compare, /guide, etc.) | ✅ Done |
+| RelatedArticles component | ✅ Done |
 | GA4 custom events (article_read, cta_click, toc_click) | ⏳ Next |
-| Cluster index pages (/compare, /guide, etc.) | ⏳ Next |
-| RelatedArticles component | ⏳ Next |
 | Real article content — Фаза 1 (3 статті) | ⏳ Next |
+
+> **Нотатка:** Дати placeholder статей: January 25, 2025 — виправити при написанні реального контенту через MDX frontmatter publishedAt/updatedAt.
 
 ---
 
@@ -297,22 +299,22 @@ FAQPage schema — автогенерація з H3 що починаються 
 
 ## 7. Наступні кроки (в порядку пріоритету)
 
-### Крок 1 — SEO foundation
-Промпт для Claude Code:
+### ~~Крок 1 — SEO foundation~~ ✅ Done
 - `app/sitemap.ts` — динамічний, з усіх MDX файлів
-- `app/robots.txt`
+- `app/robots.ts`
 - Article JSON-LD schema в кожному `[slug]/page.tsx`
 - FAQPage schema автогенерація з H3 питань
+- `lib/schema.ts` — buildArticleSchema, buildFAQSchema, extractFAQsFromContent
 
-### Крок 2 — Cluster index pages + RelatedArticles
-Промпт для Claude Code:
+### ~~Крок 2 — Cluster index pages + RelatedArticles~~ ✅ Done
 - `app/[cluster]/page.tsx` для всіх 5 кластерів
 - `components/article/RelatedArticles.tsx` з frontmatter `relatedSlugs`
 
-### Крок 3 — GA4 custom events
+### Крок 3 — GA4 custom events ← **ACTIVE**
 Промпт для Claude Code:
 - `article_read` через IntersectionObserver (75% scroll)
 - `cta_click` onClick в CTABlock
+- `toc_click` onClick в TOC items
 - Через GTM або прямо в компонентах
 
 ### Крок 4 — Перший реальний контент
