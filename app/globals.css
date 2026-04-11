@@ -124,3 +124,140 @@ pre code {
   color: #ffffff;
   text-decoration: none;
 }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in-up {
+    animation: fadeInUp 400ms ease-out both;
+  }
+  .animate-delay-1 { animation-delay: 80ms; }
+  .animate-delay-2 { animation-delay: 160ms; }
+  .animate-delay-3 { animation-delay: 240ms; }
+  .animate-delay-4 { animation-delay: 320ms; }
+}
+
+/* Smooth scroll offset for sticky header */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* ============================================
+   HOVER EFFECTS (CSS only, no JS)
+   ============================================ */
+
+/* Animated underline for inline article links */
+.prose a {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 200ms ease, color 200ms ease;
+  text-decoration: none;
+}
+.prose a:hover {
+  background-size: 100% 1px;
+  color: var(--color-accent-dark);
+}
+
+/* Cluster cards hover */
+.cluster-card {
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+              border-top-width 200ms ease;
+}
+.cluster-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(13, 107, 107, 0.08);
+  border-top-width: 4px;
+}
+
+/* CTA button */
+.cta-button {
+  position: relative;
+  overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+              background-color 200ms ease;
+}
+.cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 107, 107, 0.25);
+  background-color: var(--color-accent-dark);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cta-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: shimmer 3s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+}
+
+/* TOC active item transition */
+.toc-item {
+  transition: color 200ms ease, padding-left 200ms ease;
+}
+.toc-item.active {
+  color: var(--color-accent);
+  padding-left: 4px;
+}
+
+/* Mobile TOC — hidden on desktop, visible on mobile */
+.mobile-toc-container {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .mobile-toc-container {
+    display: block;
+  }
+}
+
+/* Mobile TOC drawer transition */
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-toc-drawer {
+    transition: transform 300ms ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-toc-drawer {
+    transition: none;
+  }
+}
+
+/* Header scroll shadow — applied via JS class */
+.header-scrolled {
+  box-shadow: 0 1px 0 var(--color-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(247, 245, 240, 0.92);
+}

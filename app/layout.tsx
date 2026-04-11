@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Serif_Display, Source_Serif_4, DM_Sans, JetBrains_Mono } from 'next/font/google'
 import GoogleTagManager from '@/components/GoogleTagManager'
+import Header from '@/components/layout/Header'
 import './globals.css'
 
 const dmSerifDisplay = DM_Serif_Display({
@@ -58,6 +59,7 @@ export default function RootLayout({
     >
       <body>
         <GoogleTagManager />
+        <Header />
         {children}
       </body>
     </html>

@@ -63,6 +63,7 @@ export default function TOC({ items }: TOCProps) {
           >
             <a
               href={`#${item.id}`}
+              className={`toc-item${activeId === item.id ? ' active' : ''}`}
               style={{
                 display: 'block',
                 fontFamily: 'var(--font-ui)',
@@ -71,7 +72,6 @@ export default function TOC({ items }: TOCProps) {
                 color: activeId === item.id ? 'var(--color-accent)' : 'var(--color-text-muted)',
                 textDecoration: 'none',
                 padding: '0.15rem 0',
-                transition: 'color 0.1s ease',
               }}
             >
               {item.text}

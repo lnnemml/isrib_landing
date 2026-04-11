@@ -1,237 +1,167 @@
 # isrib-research.com — Master Plan
 
-> Версія 1.0 | Статус: Planning
+> Версія 3.0 | Статус: Infrastructure Complete → Content Phase
+
+---
+
+## Статус реалізації
+
+| Шар | Статус |
+|---|---|
+| Repo cleanup (лендинг видалено) | ✅ Done |
+| Design system (globals.css, CSS variables) | ✅ Done |
+| Fonts (next/font/google, 4 families, self-hosted) | ✅ Done |
+| Tailwind config з CSS variable tokens | ✅ Done |
+| MDX pipeline (next-mdx-remote, gray-matter, reading-time) | ✅ Done |
+| lib/mdx.ts + lib/toc.ts | ✅ Done |
+| Custom MDX components (DoseProtocol, ResearchCallout, UserQuote) | ✅ Done |
+| CTABlock, AuthorBio | ✅ Done |
+| TOC component (IntersectionObserver, active state + transition) | ✅ Done |
+| ArticleLayout (sidebar + content grid) | ✅ Done |
+| All cluster routes (compare, guide, science, blog, tbi) | ✅ Done |
+| /author/ page | ✅ Done |
+| Homepage (cluster grid, hero, fully clickable cards) | ✅ Done |
+| Header (active link, sticky, scroll shadow) | ✅ Done |
+| Reading progress bar (useReadingProgress hook) | ✅ Done |
+| Page load stagger fade-in | ✅ Done |
+| Header scroll shadow + backdrop blur | ✅ Done |
+| Cluster cards hover lift + fully clickable | ✅ Done |
+| CTA button shimmer + lift | ✅ Done |
+| Inline link animated underline | ✅ Done |
+| Mobile TOC drawer (slide-up) | ✅ Done |
+| TOC active item smooth transition | ✅ Done |
+| Sitemap (app/sitemap.ts) | ⏳ Next |
+| robots.txt | ⏳ Next |
+| Schema markup (Article + FAQPage JSON-LD) | ⏳ Next |
+| GA4 custom events (article_read, cta_click, toc_click) | ⏳ Next |
+| Cluster index pages (/compare, /guide, etc.) | ⏳ Next |
+| RelatedArticles component | ⏳ Next |
+| Real article content — Фаза 1 (3 статті) | ⏳ Next |
 
 ---
 
 ## 1. Концепція і позиціонування
 
-### Що це за сайт
-
-`isrib-research.com` — незалежний науковий ресурс про ISRIB, ISR pathway та когнітивне вдосконалення. Не магазин з блогом. Не маркетинговий сайт. Авторитетний інформаційний хаб, монетизований через CTA в кінці статей.
-
-### Positioning statement
+`isrib-research.com` — незалежний науковий ресурс про ISRIB, ISR pathway та когнітивне вдосконалення. Авторитетний інформаційний хаб, монетизований через CTA в кінці кожної статті → `isrib.shop`.
 
 > *"The most technically rigorous independent resource on ISRIB A15 — written by a synthetic chemist with first-hand experience, not a marketer translating PubMed abstracts."*
 
-### Автор і E-E-A-T
+### Автор — "The Synthesis Lab"
 
-Для Google YMYL-ніші необхідна сторінка автора. Оскільки особиста ідентичність залишається закритою — використовуємо **псевдонім з верифікованими credentials**.
-
-**Варіант позиціонування автора:**
-
-- Псевдонім: наприклад "Dr. K. Marsh" або просто "The Synthesis Lab" як brand entity
-- Credentials (без розкриття імені): *"Pharmaceutical chemist with background in small-molecule synthesis. Former medicinal chemistry researcher. One of the earliest independent synthesizers of ISRIB A15."*
-- Немає фото — замість цього: стилізований аватар або лабораторна фотографія без обличчя (рукавички, обладнання)
-- Посилання на синтезований продукт як доказ expertise: *"I've synthesized and characterized ISRIB A15 in-house — purity verified by HPLC."*
-
-**Чому це працює для SEO:** Google оцінює E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) за якістю контенту і структурою, а не за тим, чи розкрите справжнє ім'я. Pseudonymous authors є нормою в академічному блогінгу (Gwern, Astral Codex Ten тощо).
+Псевдонім без розкриття особистості. Avatar: ініціали "SR" у teal колі.
+Credentials: *"Pharmaceutical chemist · Small-molecule synthesis · Independent ISRIB A15 researcher"*
+Сторінка: `/author/` ✅
 
 ---
 
 ## 2. Tone of Voice
 
-### Загальний принцип
-
-Peer-to-peer розмова між двома технічно грамотними людьми. Не лекція. Не реклама. Не науп-поп.
-
-### Параметри голосу
+Peer-to-peer між двома технічно грамотними людьми.
 
 | Параметр | Як |
 |---|---|
-| Регістр | Технічно точний, але доступний. Між науковим блогом і r/nootropics |
-| Особа | Перша ("As a chemist who synthesized A15...") там де є особистий досвід |
-| Третя особа | Для наукових фактів ("Studies show...") |
-| Скептицизм | Завжди присутній. "Research is promising, human data is limited." Довіру підвищує |
-| Заборони | Hype слова: "revolutionary", "breakthrough", "game-changer". Натомість: "notable", "significant", "worth examining" |
-| Аудиторія | Люди що вже читали Peter Walter і r/nootropics — не пояснювати що таке ноотропи |
-
-### Приклад голосу (правильно)
-
-> "ISRIB A15 isn't magic. It's a small molecule that does one specific thing well: it stabilizes the eIF2B complex under stress conditions. Whether that translates to the kind of cognitive restoration seen in aged mice — we genuinely don't know yet in humans. What the synthesis data and user reports suggest, however, is that..."
-
-### Приклад голосу (неправильно)
-
-> "ISRIB A15 is the revolutionary cognitive enhancer that will transform your brain performance and unlock your true potential!"
+| Регістр | Технічно точний, але доступний |
+| Особа | Перша там де є особистий досвід синтезу |
+| Скептицизм | Завжди: "Research is promising, human data is limited." |
+| Заборони | "revolutionary", "breakthrough", "game-changer" |
+| Натомість | "notable", "significant", "worth examining" |
 
 ---
 
-## 3. UI/UX концепція
+## 3. UI/UX
 
-### Естетика: "Scientific Editorial"
-
-Між Nature.com і Gwern.net. Читабельність як головний пріоритет, але з власним характером.
-
-**Не:**
-- Типовий SaaS landing page
-- Ноотропний "бро" дизайн (neon, dark mode з green accents)
-- Медичний стерильний білий
-
-**Так:**
-- Монохромна основа (майже чорний текст на off-white фоні)
-- Один акцентний колір — виражений deep teal
-- Типографіка як головний інструмент ієрархії
-- Довгий читабельний текст — не картки і не плитки
-
-### Кольорова палітра
+### Кольори (CSS variables, не hardcode)
 
 ```
-Background:      #F7F5F0   warm off-white (не чистий білий)
-Text primary:    #1A1A18   майже чорний (не чистий чорний)
-Text secondary:  #6B6B65   muted gray
-Accent:          #0D6B6B   deep teal
-Accent light:    #E8F4F4   teal tint для highlights і цитат
-Border:          #E0DDD6   розділювачі
-Code/dose bg:    #F0EDE6   теплий cream для блоків з дозуванням
-Code text:       #2A2A28
-Link:            #0D6B6B   (accent, no underline за замовчуванням)
-Link hover:      #0A5555
+--color-bg:           #F7F5F0
+--color-bg-code:      #F0EDE6
+--color-bg-accent:    #E8F4F4
+--color-text:         #1A1A18
+--color-text-muted:   #6B6B65
+--color-accent:       #0D6B6B
+--color-accent-dark:  #0A5555
+--color-border:       #E0DDD6
 ```
 
-### Шрифти
-
-| Роль | Шрифт | Обґрунтування |
-|---|---|---|
-| Display / H1 | `DM Serif Display` | Класичний серіф — науковий, але не нудний |
-| Body / H2-H4 | `Source Serif 4` | Довгий текст читається краще на серіфах |
-| UI елементи (nav, labels) | `DM Sans` | Чистий без-серіф для інтерфейсних елементів |
-| Код / дозування | `JetBrains Mono` | Для хімічних формул, протоколів дозування |
-
-Всі шрифти — Google Fonts, безкоштовні, швидкі.
-
-### Типографічна шкала
+### Шрифти (CSS variables, не hardcode)
 
 ```
-H1:    2.5rem / DM Serif Display / line-height 1.2
-H2:    1.75rem / DM Serif Display / line-height 1.3
-H3:    1.25rem / Source Serif 4 / font-weight 600
-Body:  1.125rem / Source Serif 4 / line-height 1.8 / max-width 68ch
-Small: 0.875rem / DM Sans
-Mono:  0.9rem / JetBrains Mono
+--font-display:  DM Serif Display   → H1, H2
+--font-body:     Source Serif 4     → body, H3+
+--font-ui:       DM Sans            → nav, labels, meta
+--font-mono:     JetBrains Mono     → code, doses
 ```
 
-### Layout принципи
+### Animation Layer (реалізовано повністю)
 
-- Одноколонковий article layout: max-width 68 символів (оптимум для читання)
-- На desktop: sticky TOC в лівій колонці (240px) + контент (680px) + правий відступ
-- На mobile: TOC ховається за кнопку "Contents"
-- Велика кількість whitespace між секціями — стаття має "дихати"
-- Breadcrumb навігація на всіх article pages
+CSS @keyframes + React hooks. Без бібліотек. `prefers-reduced-motion` compliant.
 
-### Custom компоненти
-
-**DoseProtocol block** — для протоколів дозування:
-```
-╔═══════════════════════════════╗
-║  DOSING PROTOCOL              ║
-║  Starting dose:   5 mg        ║
-║  Standard dose:   10–15 mg    ║
-║  Frequency:       2–3x/week   ║
-║  Form:            Powder/oral ║
-╚═══════════════════════════════╝
-```
-Стиль: cream background, mono шрифт, teal border-left.
-
-**ResearchCallout block** — для ключових наукових фактів:
-```
-[ RESEARCH NOTE ]
-In a 2020 eLife study, aged mice showed...
-```
-Стиль: teal-tinted background, курсив, з посиланням на source.
-
-**UserQuote block** — для реальних відгуків з Reddit/LongeCity:
-```
-" Feels like my brain was defragged. Memory
-  consolidation noticeably improved after
-  day 2. "
-  — r/nootropics user, 2023
-```
-Стиль: більший шрифт, відступ, muted attribution.
-
-**CTABlock** — в кінці кожної статті:
-```
-┌─────────────────────────────────────┐
-│  Where to buy ISRIB A15             │
-│  In-house synthesized · 98%+ purity │
-│  [ Buy ISRIB A15 → isrib.shop ]     │
-└─────────────────────────────────────┘
-```
+| Ефект | Клас / Хук |
+|---|---|
+| Page load stagger | `.animate-fade-in-up` + `.animate-delay-1/2/3/4` |
+| Reading progress bar | `useReadingProgress` → `ReadingProgress` component |
+| Header scroll shadow | `useScrollHeader` → `.header-scrolled` class |
+| Cluster cards hover | `.cluster-card` CSS |
+| CTA button shimmer | `.cta-button::after` CSS |
+| Inline link underline | `.prose a` background-size CSS |
+| Mobile TOC drawer | `MobileTOC` component |
+| TOC active transition | `.toc-item.active` CSS |
 
 ---
 
 ## 4. Контентна архітектура
 
-### Sitemap
+### Sitemap (поточний)
 
 ```
 isrib-research.com/
-├── /                          Homepage (SEO hub overview)
-├── /author/                   E-E-A-T сторінка автора (псевдонім)
-├── /compare/                  Кластер порівнянь
-│   ├── /compare/isrib-vs-modafinil/
-│   ├── /compare/isrib-vs-noopept/
-│   ├── /compare/isrib-vs-racetams/
-│   └── /compare/best-nootropic-brain-fog/
-├── /guide/                    Продуктовий кластер
-│   ├── /guide/isrib-a15-complete-guide/
-│   ├── /guide/isrib-a15-dosing-protocol/
-│   ├── /guide/isrib-a15-vs-original-isrib/
-│   └── /guide/isrib-a15-user-experiences/
-├── /science/                  Науковий кластер
-│   ├── /science/what-is-integrated-stress-response/
-│   ├── /science/eif2b-memory-protein-synthesis/
-│   ├── /science/isrib-discovery-peter-walter-ucsf/
-│   └── /science/isrib-human-trials-2024/
-├── /blog/                     Symptom-based кластер (широка воронка)
-│   ├── /blog/how-to-fix-brain-fog/
-│   ├── /blog/nootropics-for-burnout-recovery/
-│   ├── /blog/post-covid-brain-fog-supplements/
-│   ├── /blog/cognitive-decline-30s-40s/
-│   └── /blog/nootropics-adhd-professionals/
-└── /tbi/                      TBI/Recovery кластер
-    ├── /tbi/isrib-traumatic-brain-injury-research/
-    └── /tbi/cognitive-recovery-post-concussion/
+├── /                        ✅ Homepage
+├── /author/                 ✅ E-E-A-T
+├── /compare/[slug]/         ✅ + placeholder MDX
+├── /guide/[slug]/           ✅ + placeholder MDX
+├── /science/[slug]/         ✅ + placeholder MDX
+├── /blog/[slug]/            ✅ + placeholder MDX
+└── /tbi/[slug]/             ✅ + placeholder MDX
 ```
 
-### Пріоритет запуску
+Потрібно додати cluster index pages:
+```
+├── /compare/                ⏳ список статей кластера
+├── /guide/                  ⏳
+├── /science/                ⏳
+├── /blog/                   ⏳
+└── /tbi/                    ⏳
+```
 
-| Фаза | Статті | Причина |
+### Пріоритет контенту
+
+| Фаза | Стаття | Кластер |
 |---|---|---|
-| **Фаза 1** | ISRIB A15 vs Modafinil | Найбільший комерційний intent |
-| **Фаза 1** | ISRIB A15 Complete Guide | Pillar для всього сайту |
-| **Фаза 1** | What is ISR? | Авторитетна основа для internal links |
-| **Фаза 2** | Решта /compare/ | Конверсійний трафік |
-| **Фаза 2** | How to fix brain fog | Широка воронка |
-| **Фаза 3** | /science/ кластер | Backlinks і E-E-A-T |
-| **Фаза 4** | /tbi/ кластер | Окрема аудиторія |
+| **1** | ISRIB A15 vs Modafinil | /compare/ |
+| **1** | ISRIB A15 Complete Guide | /guide/ |
+| **1** | What is the ISR? | /science/ |
+| **2** | ISRIB A15 vs Noopept | /compare/ |
+| **2** | ISRIB A15 vs Racetams | /compare/ |
+| **2** | How to fix brain fog | /blog/ |
+| **3** | eIF2B and memory formation | /science/ |
+| **3** | Best nootropic for burnout | /blog/ |
+| **4** | ISRIB for TBI research | /tbi/ |
 
 ### Формула статті
 
-Кожна стаття будується за цією структурою:
-
 ```
-1. Hook           — дзеркало болю ("If your brain doesn't feel like yours anymore...")
+1. Hook           — дзеркало болю читача
 2. Reframe        — ISR як біологічний блок, не поведінкова проблема
-3. Mechanism      — Як ISRIB/A15 це вирішує (Peter Walter, eIF2B, дослідження)
-4. Evidence       — Ключові дослідження (стисло, з посиланнями)
-5. Comparison     — Чому A15 відрізняється від альтернатив
-6. User reports   — Цитати з Reddit/LongeCity (styled як UserQuote)
-7. Objections     — Safe? Legal? Placebo? Відповіді чесно
-8. Protocol       — DoseProtocol block якщо релевантно
-9. CTA block      — "Where to buy ISRIB A15" → isrib.shop
-10. Related       — 3 релевантні статті
-11. Author bio    — Псевдонім + credentials
+3. Mechanism      — eIF2B, Peter Walter, як A15 це вирішує
+4. Evidence       — ключові дослідження (ResearchCallout)
+5. Comparison     — чому A15 відрізняється від альтернатив
+6. User reports   — цитати з Reddit/LongeCity (UserQuote)
+7. Objections     — Safe? Legal? Placebo?
+8. Protocol       — DoseProtocol якщо релевантно
+9. CTABlock       — → isrib.shop
+10. Related       — 3 пов'язані статті (RelatedArticles)
+11. AuthorBio
 ```
-
-### Internal linking матриця
-
-Кожна стаття лінкує на:
-1. Pillar свого кластера (якщо це cluster article)
-2. `/guide/isrib-a15-complete-guide/` (завжди)
-3. 1–2 релевантні статті з інших кластерів
-4. `/author/` (через author bio в кінці)
-
-Транзакційні запити ("buy ISRIB A15") → напряму на `isrib.shop`, оминаючи research.com.
 
 ---
 
@@ -240,13 +170,14 @@ isrib-research.com/
 ### Stack
 
 ```
-Framework:    Next.js 14+ (App Router)
-Мова:         TypeScript
-Контент:      MDX (local files, не CMS)
-Styling:      Tailwind CSS
-Шрифти:       Google Fonts (DM Serif Display, Source Serif 4, DM Sans, JetBrains Mono)
-Hosting:      Vercel (існуюче)
-Analytics:    GA4 (GTM-58KVC9F4 / G-LJEBV5NPCT)
+Framework:   Next.js 14+ App Router
+Language:    TypeScript
+Content:     MDX via next-mdx-remote
+Styling:     Tailwind CSS + CSS custom properties
+Fonts:       next/font/google (self-hosted)
+Animations:  CSS @keyframes + React hooks
+Hosting:     Vercel
+Analytics:   GTM-58KVC9F4 / GA4 G-LJEBV5NPCT
 ```
 
 ### Файлова структура
@@ -254,188 +185,158 @@ Analytics:    GA4 (GTM-58KVC9F4 / G-LJEBV5NPCT)
 ```
 isrib-research.com/
 ├── app/
-│   ├── page.tsx                        ← Homepage
-│   ├── layout.tsx                      ← Root layout (fonts, GTM)
-│   ├── author/
-│   │   └── page.tsx
+│   ├── page.tsx                    ✅ Homepage
+│   ├── layout.tsx                  ✅ Fonts + GTM
+│   ├── globals.css                 ✅ Design system + animations
+│   ├── sitemap.ts                  ⏳
+│   ├── robots.txt                  ⏳
+│   ├── author/page.tsx             ✅
 │   ├── compare/
-│   │   ├── page.tsx                    ← Список порівнянь
-│   │   └── [slug]/
-│   │       └── page.tsx
+│   │   ├── page.tsx                ⏳ cluster index
+│   │   └── [slug]/page.tsx         ✅
 │   ├── guide/
-│   │   └── [slug]/page.tsx
+│   │   ├── page.tsx                ⏳ cluster index
+│   │   └── [slug]/page.tsx         ✅
 │   ├── science/
-│   │   └── [slug]/page.tsx
+│   │   ├── page.tsx                ⏳ cluster index
+│   │   └── [slug]/page.tsx         ✅
 │   ├── blog/
-│   │   └── [slug]/page.tsx
+│   │   ├── page.tsx                ⏳ cluster index
+│   │   └── [slug]/page.tsx         ✅
 │   └── tbi/
-│       └── [slug]/page.tsx
-├── content/                            ← MDX файли
-│   ├── compare/
-│   │   └── isrib-vs-modafinil.mdx
-│   ├── guide/
-│   │   └── isrib-a15-complete-guide.mdx
-│   ├── science/
-│   │   └── what-is-integrated-stress-response.mdx
-│   ├── blog/
-│   │   └── how-to-fix-brain-fog.mdx
-│   └── tbi/
-│       └── isrib-traumatic-brain-injury.mdx
+│       ├── page.tsx                ⏳ cluster index
+│       └── [slug]/page.tsx         ✅
+├── content/
+│   ├── compare/isrib-vs-modafinil.mdx         ✅ placeholder
+│   ├── guide/isrib-a15-complete-guide.mdx     ✅ placeholder
+│   ├── science/what-is-integrated-...mdx      ✅ placeholder
+│   ├── blog/how-to-fix-brain-fog.mdx          ✅ placeholder
+│   └── tbi/isrib-traumatic-brain-injury.mdx   ✅ placeholder
 ├── components/
 │   ├── layout/
-│   │   ├── Header.tsx
-│   │   ├── Footer.tsx
-│   │   └── ArticleLayout.tsx           ← TOC + content + sidebar
-│   ├── article/
-│   │   ├── TOC.tsx                     ← Sticky table of contents
-│   │   ├── CTABlock.tsx                ← "Where to buy" блок
-│   │   ├── AuthorBio.tsx
-│   │   ├── RelatedArticles.tsx
-│   │   ├── DoseProtocol.tsx            ← Custom MDX компонент
-│   │   ├── ResearchCallout.tsx         ← Custom MDX компонент
-│   │   └── UserQuote.tsx               ← Custom MDX компонент
-│   └── home/
-│       ├── ClusterGrid.tsx             ← 5 кластерів на homepage
-│       └── RecentArticles.tsx
+│   │   ├── Header.tsx              ✅
+│   │   └── ArticleLayout.tsx       ✅
+│   └── article/
+│       ├── TOC.tsx                 ✅
+│       ├── MobileTOC.tsx           ✅
+│       ├── ReadingProgress.tsx     ✅
+│       ├── CTABlock.tsx            ✅
+│       ├── AuthorBio.tsx           ✅
+│       ├── RelatedArticles.tsx     ⏳
+│       ├── DoseProtocol.tsx        ✅
+│       ├── ResearchCallout.tsx     ✅
+│       └── UserQuote.tsx           ✅
+├── hooks/
+│   ├── useReadingProgress.ts       ✅
+│   └── useScrollHeader.ts          ✅
 ├── lib/
-│   ├── mdx.ts                          ← MDX parsing, frontmatter
-│   ├── articles.ts                     ← Список статей, метадані
-│   └── toc.ts                          ← TOC generation з headings
-├── styles/
-│   └── globals.css                     ← CSS variables, typography
-└── public/
-    └── ...
+│   ├── mdx.ts                      ✅
+│   └── toc.ts                      ✅
+├── PLAN.md                         ✅
+└── CLAUDE.md                       ✅
 ```
 
 ### MDX frontmatter схема
 
 ```yaml
 ---
-title: "ISRIB A15 vs Modafinil: A Chemist's Comparison"
+title: "..."
 description: "..."
-slug: "isrib-vs-modafinil"
-cluster: "compare"
-publishedAt: "2025-01-15"
-updatedAt: "2025-01-15"
-readingTime: 12
-keywords: ["isrib vs modafinil", "isrib a15 comparison"]
-relatedSlugs:
-  - "isrib-a15-complete-guide"
-  - "what-is-integrated-stress-response"
+slug: "..."
+cluster: compare | guide | science | blog | tbi
+publishedAt: "YYYY-MM-DD"
+updatedAt: "YYYY-MM-DD"
+keywords: []
+relatedSlugs: []
 ---
 ```
 
-### Schema Markup
+`readingTime` — не вказувати, розраховується автоматично.
 
-На кожній article page генерується автоматично:
+### Schema Markup (pending)
+
+Article JSON-LD в кожному `[slug]/page.tsx`:
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "...",
-  "datePublished": "...",
-  "dateModified": "...",
   "author": {
     "@type": "Person",
-    "name": "[Псевдонім]",
+    "name": "The Synthesis Lab",
     "jobTitle": "Pharmaceutical Chemist",
     "url": "https://isrib-research.com/author/"
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "ISRIB Research"
-  },
-  "about": {
-    "@type": "Drug",
-    "name": "ISRIB A15"
-  }
+  "publisher": { "@type": "Organization", "name": "ISRIB Research" },
+  "about": { "@type": "Drug", "name": "ISRIB A15" }
 }
 ```
 
-FAQPage schema генерується автоматично з H3 заголовків які починаються з питання ("Does ISRIB...?", "Is it safe...?").
-
-### SEO технічні деталі
-
-- **Canonical URLs:** `isrib-research.com` — master canonical. Якщо контент дублюється на `isrib-a15.com`, там `rel="canonical"` вказує на research.com
-- **Sitemap:** динамічний `app/sitemap.ts` — автоматично включає всі MDX файли за `publishedAt`
-- **robots.txt:** все відкрито, окрім `/api/`
-- **Static generation:** `generateStaticParams` для всіх article routes → Vercel edge caching
-- **Images:** `next/image` з lazy loading і blur placeholder
-- **Core Web Vitals target:** всі зелені (LCP < 2.5s, CLS < 0.1, FID < 100ms)
-
-### Існуючий лендинг
-
-Лендинг перенесений на `isrib-a15.com`. На `isrib-research.com`:
-- Видалити все специфічне для лендингу (hero copy, pricing, checkout)
-- Зберегти: GTM тег, GA4 конфігурацію, базові layout компоненти якщо є
-- Перезаписати `app/page.tsx` на Homepage SEO hub
-- Додати новий `globals.css` з типографічною системою
+FAQPage schema — автогенерація з H3 що починаються з питання.
 
 ---
 
-## 6. Analytics і трекінг
+## 6. Analytics
 
-### Існуюче (зберігаємо)
+| ID | Призначення |
+|---|---|
+| GTM-58KVC9F4 | GTM container |
+| G-LJEBV5NPCT | GA4 |
+| 1228338595957402 | Meta Pixel |
 
-- GTM Container: `GTM-58KVC9F4`
-- GA4 Measurement ID: `G-LJEBV5NPCT`
-- Meta Pixel: `1228338595957402`
-
-### Нові події для контентного сайту
+### Custom events (pending)
 
 | Подія | Тригер |
 |---|---|
-| `article_read` | Scroll 75% статті |
-| `cta_click` | Клік на CTABlock → isrib.shop |
-| `toc_click` | Клік на TOC посилання |
-| `cluster_click` | Клік на cluster card з homepage |
+| `article_read` | Scroll 75% article content |
+| `cta_click` | Клік CTABlock → isrib.shop |
+| `toc_click` | Клік TOC item |
+| `cluster_click` | Клік cluster card з homepage |
 
 ---
 
-## 7. Черговість реалізації
+## 7. Наступні кроки (в порядку пріоритету)
 
-### Тиждень 1 — Фундамент
+### Крок 1 — SEO foundation
+Промпт для Claude Code:
+- `app/sitemap.ts` — динамічний, з усіх MDX файлів
+- `app/robots.txt`
+- Article JSON-LD schema в кожному `[slug]/page.tsx`
+- FAQPage schema автогенерація з H3 питань
 
-- [ ] Очистити лендинг код, зберегти GTM/GA4 теги
-- [ ] Встановити і налаштувати шрифти (Google Fonts)
-- [ ] Написати `globals.css` з кольоровими змінними і типографічною системою
-- [ ] MDX pipeline: `next-mdx-remote` або вбудований Next.js MDX
-- [ ] `ArticleLayout.tsx` з sticky TOC
-- [ ] Custom MDX компоненти: `CTABlock`, `DoseProtocol`, `ResearchCallout`, `UserQuote`
-- [ ] `AuthorBio.tsx` (псевдонім + credentials)
-- [ ] `/author/` сторінка
-- [ ] Schema markup автогенерація
+### Крок 2 — Cluster index pages + RelatedArticles
+Промпт для Claude Code:
+- `app/[cluster]/page.tsx` для всіх 5 кластерів
+- `components/article/RelatedArticles.tsx` з frontmatter `relatedSlugs`
 
-### Тиждень 2 — Перший контент
+### Крок 3 — GA4 custom events
+Промпт для Claude Code:
+- `article_read` через IntersectionObserver (75% scroll)
+- `cta_click` onClick в CTABlock
+- Через GTM або прямо в компонентах
 
-- [ ] "ISRIB A15 vs Modafinil" (перша публікація)
-- [ ] "ISRIB A15 Complete Guide" (pillar)
-- [ ] Homepage
-- [ ] Динамічний sitemap
+### Крок 4 — Перший реальний контент
+Окрема сесія з Claude (не Code):
+1. `isrib-vs-modafinil.mdx` — найвищий пріоритет
+2. `isrib-a15-complete-guide.mdx`
+3. `what-is-integrated-stress-response.mdx`
 
-### Тиждень 3+
+Для написання контенту: передати в Claude foundational docs
+(ISRIB_Avatar_Sheet, Isrib_Necessary_Beliefs, ISRIB_Offer_Brief,
+Isrib_Research_Document, ISRIB_Report) + цей PLAN.md.
 
-- [ ] Решта /compare/ кластеру (3 статті)
-- [ ] "What is ISR?" та "eIF2B" (/science/)
-- [ ] Symptom-based статті (/blog/)
-- [ ] FAQPage schema автоматизація
+### Крок 5 — Deploy
+- Підключити домен `isrib-research.com` до Vercel
+- Перевірити Core Web Vitals після деплою
 
 ---
 
-## 8. Нотатки і рішення
+## 8. Нотатки
 
-### Чому MDX, а не headless CMS
+**Cluster cards:** Весь `<Link>` wraps card — клікабельна вся область, не тільки текст.
 
-Статті містять хімічні формули, кастомні компоненти (DoseProtocol, ResearchCallout), таблиці. MDX дає повну гнучкість без vendor lock-in і без щомісячних платежів. Git-based workflow — зміни трекуються. Drawback: потрібен деплой для кожної нової статті (прийнятно на поточному масштабі).
+**CTABlock:** Статичний компонент без props. Якщо потрібна варіація по кластерах — додати `variant?: ArticleCluster` prop пізніше.
 
-### Чому окремий домен від isrib.shop
+**Server vs Client:** Hover CSS → Server Component. useState/useEffect/usePathname → `'use client'`.
 
-`isrib.shop` — касовий апарат. Змішування "intent to learn" і "intent to buy" на одному домені послаблює обидва сигнали для Google. Окремий домен дає:
-- Тематичний авторитет для дослідницького контенту
-- Чистий checkout flow без відвернення уваги на .shop
-- Можливість лінкувати з research.com → .shop (cross-domain CTA)
-
-### Псевдонімний автор і довіра
-
-Аномімний/псевдонімний автор нормальний прецедент у технічному блогінгу (Gwern Branwen, Scott Alexander/Astral Codex Ten). Довіру будує якість аргументації і технічна точність, а не розкрите ім'я. Credentials ("pharmaceutical chemist, in-house synthesizer") верифікуються через якість контенту, а не через паспорт.
+**`readingTime`** в frontmatter не вказувати — `lib/mdx.ts` розраховує автоматично через `reading-time` пакет.

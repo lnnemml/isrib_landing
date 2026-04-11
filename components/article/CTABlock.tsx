@@ -50,7 +50,7 @@ export default function CTABlock() {
         href="https://isrib.shop"
         target="_blank"
         rel="noopener noreferrer"
-        className="cta-link"
+        className="cta-link cta-button"
       >
         Buy ISRIB A15 →
       </a>
