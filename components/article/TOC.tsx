@@ -73,6 +73,13 @@ export default function TOC({ items }: TOCProps) {
                 textDecoration: 'none',
                 padding: '0.15rem 0',
               }}
+              onClick={() => {
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
+                  event: 'toc_click',
+                  toc_heading: item.text,
+                })
+              }}
             >
               {item.text}
             </a>

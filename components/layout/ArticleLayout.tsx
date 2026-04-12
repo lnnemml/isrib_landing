@@ -5,6 +5,7 @@ import CTABlock from '@/components/article/CTABlock'
 import AuthorBio from '@/components/article/AuthorBio'
 import ReadingProgress from '@/components/article/ReadingProgress'
 import MobileTOC from '@/components/article/MobileTOC'
+import ArticleReadTracker from '@/components/article/ArticleReadTracker'
 
 type ArticleLayoutProps = {
   frontmatter: ArticleFrontmatter
@@ -93,8 +94,13 @@ export default function ArticleLayout({ frontmatter, toc, children, relatedArtic
           </div>
 
           {/* Article body */}
-          <div className="animate-fade-in-up animate-delay-4 prose">
+          <div className="animate-fade-in-up animate-delay-4 prose" style={{ position: 'relative' }}>
             {children}
+            <ArticleReadTracker
+              slug={frontmatter.slug}
+              cluster={frontmatter.cluster}
+              title={frontmatter.title}
+            />
           </div>
 
           {/* End-of-article blocks */}

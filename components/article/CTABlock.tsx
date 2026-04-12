@@ -1,4 +1,14 @@
+'use client'
+
 export default function CTABlock() {
+  function handleCTAClick() {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      event: 'cta_click',
+      cta_location: 'article_bottom',
+    })
+  }
+
   return (
     <div
       style={{
@@ -51,6 +61,7 @@ export default function CTABlock() {
         target="_blank"
         rel="noopener noreferrer"
         className="cta-link cta-button"
+        onClick={handleCTAClick}
       >
         Buy ISRIB A15 →
       </a>
