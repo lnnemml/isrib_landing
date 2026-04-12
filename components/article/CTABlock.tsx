@@ -57,7 +57,7 @@ export default function CTABlock() {
       </p>
 
       <a
-        href="https://isrib.shop"
+        href="https://isrib.shop/product_isrib_A15.html"
         target="_blank"
         rel="noopener noreferrer"
         className="cta-link cta-button"
