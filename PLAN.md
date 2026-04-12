@@ -35,10 +35,14 @@
 | Schema markup (Article + FAQPage JSON-LD) | ✅ Done |
 | Cluster index pages (/compare, /guide, etc.) | ✅ Done |
 | RelatedArticles component | ✅ Done |
-| GA4 custom events (article_read, cta_click, toc_click) | ⏳ Next |
+| GA4 custom events (article_read, cta_click, toc_click) | ✅ Done |
+| GTM container for isrib-research.com (new, separate from isrib.shop) | ✅ Done |
 | Real article content — Фаза 1 (3 статті) | ⏳ Next |
 
 > **Нотатка:** Дати placeholder статей: January 25, 2025 — виправити при написанні реального контенту через MDX frontmatter publishedAt/updatedAt.
+
+> GTM контейнер isrib-research.com: GTM-W5QH2NR5 (компонент: components/GoogleTagManager.tsx)
+> GA4: G-LJEBV5NPCT спільний для всіх трьох сайтів — фільтрувати по hostname в звітах.
 
 ---
 
@@ -310,22 +314,22 @@ FAQPage schema — автогенерація з H3 що починаються 
 - `app/[cluster]/page.tsx` для всіх 5 кластерів
 - `components/article/RelatedArticles.tsx` з frontmatter `relatedSlugs`
 
-### Крок 3 — GA4 custom events ← **ACTIVE**
-Промпт для Claude Code:
-- `article_read` через IntersectionObserver (75% scroll)
+### ~~Крок 3 — GA4 custom events~~ ✅ Done
+- `article_read` через IntersectionObserver (75% scroll) — ArticleReadTracker.tsx
 - `cta_click` onClick в CTABlock
 - `toc_click` onClick в TOC items
-- Через GTM або прямо в компонентах
+- Window.dataLayer type: types/global.d.ts
 
-### Крок 4 — Перший реальний контент
-Окрема сесія з Claude (не Code):
-1. `isrib-vs-modafinil.mdx` — найвищий пріоритет
-2. `isrib-a15-complete-guide.mdx`
-3. `what-is-integrated-stress-response.mdx`
+### Крок 4 — Перший реальний контент ← **ACTIVE**
+Написання контенту — окрема сесія Claude (не Code).
+Передати: всі foundational docs + PLAN.md + CLAUDE.md.
 
-Для написання контенту: передати в Claude foundational docs
-(ISRIB_Avatar_Sheet, Isrib_Necessary_Beliefs, ISRIB_Offer_Brief,
-Isrib_Research_Document, ISRIB_Report) + цей PLAN.md.
+Порядок написання:
+1. content/compare/isrib-vs-modafinil.mdx
+2. content/guide/isrib-a15-complete-guide.mdx
+3. content/science/what-is-integrated-stress-response.mdx
+
+Примітка: виправити publishedAt з placeholder '2025-01-25' на реальну дату при написанні.
 
 ### Крок 5 — Deploy
 - Підключити домен `isrib-research.com` до Vercel

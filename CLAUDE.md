@@ -22,7 +22,7 @@ Styling:     Tailwind CSS + CSS custom properties (no hardcoded colors/fonts)
 Fonts:       next/font/google — DM Serif Display, Source Serif 4, DM Sans, JetBrains Mono
 Animations:  CSS @keyframes + React hooks only — no framer-motion, no GSAP
 Hosting:     Vercel
-Analytics:   GTM-58KVC9F4 / GA4 G-LJEBV5NPCT
+Analytics:   GTM-W5QH2NR5 / GA4 G-LJEBV5NPCT
 ```
 
 ---
@@ -59,6 +59,7 @@ components/
     ResearchCallout.tsx
     UserQuote.tsx
     RelatedArticles.tsx
+    ArticleReadTracker.tsx
 
 hooks/
   useReadingProgress.ts
@@ -68,6 +69,9 @@ lib/
   mdx.ts       getArticle, getAllArticles, getArticlesByCluster, getAllSlugs
   toc.ts       extractTOC → TOCItem[]
   schema.ts    buildArticleSchema, buildFAQSchema, extractFAQsFromContent
+
+types/
+  global.d.ts  window.dataLayer: object[] global declaration
 
 content/
   compare/     *.mdx
@@ -156,6 +160,31 @@ Every `[slug]/page.tsx` injects two `<script type="application/ld+json">` tags b
 2. **FAQPage** — present only when `extractFAQsFromContent()` finds H3 headings ending in `?`
 
 `extractFAQsFromContent` operates on raw MDX source.
+
+---
+
+## Analytics
+
+GTM containers (one per site — never mix):
+- isrib-research.com → GTM-W5QH2NR5 (components/GoogleTagManager.tsx, 'use client', strategy="afterInteractive")
+- isrib-a15.com → GTM-58KVC9F4
+- isrib.shop → GTM-M2QCB45Q
+
+GA4: G-LJEBV5NPCT — shared across all three sites.
+
+Custom dataLayer events:
+- `article_read` — fires once at 75% scroll of article body
+  payload: { event, article_slug, article_cluster, article_title }
+  implementation: ArticleReadTracker.tsx (IntersectionObserver + sentinel)
+- `cta_click` — fires on CTABlock link click
+  payload: { event, cta_location: 'article_bottom' }
+  implementation: CTABlock.tsx ('use client')
+- `toc_click` — fires on TOC item click
+  payload: { event, toc_heading }
+  implementation: TOC.tsx (already 'use client')
+
+`window.dataLayer` type declared in `types/global.d.ts` — do not redeclare elsewhere.
+No server-side analytics on isrib-research.com — browser GTM only.
 
 ---
 
