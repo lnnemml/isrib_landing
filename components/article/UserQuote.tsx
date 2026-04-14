@@ -1,6 +1,6 @@
 type UserQuoteProps = {
-  source: string
-  year: string
+  source?: string
+  year?: string
   children: React.ReactNode
 }
 
@@ -41,16 +41,18 @@ export default function UserQuote({ source, year, children }: UserQuoteProps) {
         {children}
       </div>
 
-      <div
-        style={{
-          fontFamily: 'var(--font-ui)',
-          fontSize: '0.8rem',
-          color: 'var(--color-text-muted)',
-          marginTop: '0.625rem',
-        }}
-      >
-        — {source}, {year}
-      </div>
+      {source && (
+        <div
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.8rem',
+            color: 'var(--color-text-muted)',
+            marginTop: '0.625rem',
+          }}
+        >
+          — {source}{year ? `, ${year}` : ''}
+        </div>
+      )}
     </div>
   )
 }

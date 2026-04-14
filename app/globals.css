@@ -344,3 +344,12 @@ html {
     word-wrap: break-word;
   }
 }
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .burger-btn {
+    display: block !important;
+  }
+}
