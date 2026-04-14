@@ -31,25 +31,28 @@ export default function Header() {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: '1rem 1.5rem',
+          padding: '0.75rem 1rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          gap: '1rem',
         }}
       >
         <Link
           href="/"
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.25rem',
+            fontSize: '1.125rem',
             color: 'var(--color-text)',
             textDecoration: 'none',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
           }}
         >
           ISRIB Research
         </Link>
 
-        <nav style={{ display: 'flex', gap: '1.5rem' }}>
+        <nav style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap', overflowX: 'auto' }}>
           {navLinks.map(link => {
             const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
             return (
@@ -58,9 +61,10 @@ export default function Header() {
                 href={link.href}
                 style={{
                   fontFamily: 'var(--font-ui)',
-                  fontSize: '0.875rem',
+                  fontSize: '0.8125rem',
                   color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
                   textDecoration: 'none',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {link.label}

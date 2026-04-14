@@ -37,6 +37,7 @@ export default function ArticleLayout({ frontmatter, toc, children, relatedArtic
 
       {/* Desktop grid: sidebar | content */}
       <div
+        className="article-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'var(--sidebar-width) 1fr',

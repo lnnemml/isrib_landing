@@ -306,3 +306,25 @@ html {
   -webkit-backdrop-filter: blur(8px);
   background-color: rgba(247, 245, 240, 0.92);
 }
+
+@media (max-width: 1023px) {
+  .article-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .article-grid > aside {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --text-h1: 1.875rem;
+    --text-h2: 1.375rem;
+  }
+
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
