@@ -42,6 +42,11 @@ export const metadata: Metadata = {
   description: 'Independent research resource on ISRIB A15 and the Integrated Stress Response pathway.',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {
