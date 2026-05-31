@@ -40,6 +40,11 @@ export const metadata: Metadata = {
     template: '%s | ISRIB Research',
   },
   description: 'Independent research resource on ISRIB A15 and the Integrated Stress Response pathway.',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 }
 
 export const viewport = {
